@@ -1,6 +1,9 @@
 package com.example.quoteapp.di
 
+import android.app.Application
 import com.example.quoteapp.api.ApiService
+import com.example.quoteapp.data.AppDatabase
+import com.example.quoteapp.data.QuoteDao
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -28,4 +31,16 @@ class AppModule {
     fun providesApi(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideQuoteDao(appDatabase: AppDatabase): QuoteDao{
+        return appDatabase.quoteDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideAppDatabase(app: Application) = AppDatabase.getInstance(app)
+
+
 }

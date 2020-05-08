@@ -9,19 +9,11 @@ import com.example.quoteapp.pojo.Quote
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
-class QuoteRepository(application: Application) : CoroutineScope {
-
-    private var quoteDao: QuoteDao
+class QuoteRepository(private val apiService: ApiService, private val quoteDao: QuoteDao) : CoroutineScope {
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
-    var client: ApiService = ApiFactory.apiService
-
-    init {
-        val db: AppDatabase = AppDatabase.getInstance(application)
-        quoteDao  = db.quoteDao()
-    }
 
 //    fun loadNewQuote(){
 //        val quote = async {
@@ -35,7 +27,7 @@ class QuoteRepository(application: Application) : CoroutineScope {
     //выкачиваю цитату и отправляю на валидацию
     fun loadNewQuote(){
         launch {
-            val quote: Quote = client.loadNewQuoteFromInternet()
+            val quote: Quote = apiService.loadNewQuoteFromInternet()
             validate(quote)
         }
     }

@@ -9,10 +9,15 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.quoteapp.adapters.QuoteAdapter
+import com.example.quoteapp.api.ApiService
+import com.example.quoteapp.di.MainViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
+    @Inject
+    lateinit var factory: MainViewModelFactory
     private lateinit var viewModel: MainViewModel
 
     lateinit var adapter: QuoteAdapter
@@ -24,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel = ViewModelProvider.AndroidViewModelFactory(application).create(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
 
         adapter = QuoteAdapter()
         rvQuotes.adapter = adapter

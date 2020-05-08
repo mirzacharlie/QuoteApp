@@ -5,18 +5,16 @@ import com.example.quoteapp.di.AppComponent
 import com.example.quoteapp.di.AppModule
 import com.example.quoteapp.di.DaggerAppComponent
 
-class App : Application() {
+class App : BaseApplication() {
 
     override fun onCreate() {
-        super.onCreate()
 
-        component = DaggerAppComponent
+        DaggerAppComponent
             .builder()
-            .application(Application())
-            .appModule(AppModule())
+            .application(this)
             .build()
+            .inject(this)
 
+        super.onCreate()
     }
 }
-
-lateinit var component: AppComponent

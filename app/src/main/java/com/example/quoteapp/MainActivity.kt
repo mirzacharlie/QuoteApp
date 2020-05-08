@@ -14,7 +14,7 @@ import com.example.quoteapp.di.MainViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     @Inject
     lateinit var factory: MainViewModelFactory

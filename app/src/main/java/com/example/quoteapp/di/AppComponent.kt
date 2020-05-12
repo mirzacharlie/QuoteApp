@@ -1,9 +1,11 @@
 package com.example.quoteapp.di
 
 import android.app.Application
+import com.example.quoteapp.App
 import com.example.quoteapp.MainActivity
 import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
@@ -17,7 +19,7 @@ import javax.inject.Singleton
         ActivityInjectorsModule::class
     ]
 )
-interface AppComponent {
+interface AppComponent: AndroidInjector<App> {
 
     @Component.Builder
     interface Builder {
@@ -25,10 +27,8 @@ interface AppComponent {
         @BindsInstance
         fun application(application: Application): Builder
 
-//        @BindsInstance
-//        fun appModule(appModule: AppModule?): Builder
-
         fun build(): AppComponent
     }
-    fun inject(application: Application)
+
+    override fun inject(application: App)
 }

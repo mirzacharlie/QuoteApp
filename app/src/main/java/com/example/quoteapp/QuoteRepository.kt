@@ -15,15 +15,6 @@ class QuoteRepository(private val apiService: ApiService, private val quoteDao: 
         get() = Dispatchers.Main
 
 
-//    fun loadNewQuote(){
-//        val quote = async {
-//            client.loadNewQuoteFromInternet()
-//        }
-//        launch {
-//            insertQuotesBG(quote.await())
-//        }
-//    }
-
     //выкачиваю цитату и отправляю на валидацию
     fun loadNewQuote(){
         launch {

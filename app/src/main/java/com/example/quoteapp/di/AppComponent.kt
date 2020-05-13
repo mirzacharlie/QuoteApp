@@ -1,13 +1,16 @@
 package com.example.quoteapp.di
 
 import android.app.Application
+import androidx.work.ListenableWorker
 import com.example.quoteapp.App
-import com.example.quoteapp.MainActivity
-import dagger.BindsInstance
-import dagger.Component
+import com.example.quoteapp.workers.ChildWorkerFactory
+import com.example.quoteapp.workers.DownloadWorker
+import dagger.*
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
+import dagger.multibindings.IntoMap
 import javax.inject.Singleton
+import kotlin.reflect.KClass
 
 @Singleton
 @Component(
@@ -15,11 +18,12 @@ import javax.inject.Singleton
         AppModule::class,
         AndroidSupportInjectionModule::class,
         ViewModelModule::class,
-        RepositoryModule::class,
-        ActivityInjectorsModule::class
+        QuoteRepositoryModule::class,
+        ActivityInjectorsModule::class,
+        AppComponent.WorkerBindingModule::class
     ]
 )
-interface AppComponent: AndroidInjector<App> {
+interface AppComponent : AndroidInjector<App> {
 
     @Component.Builder
     interface Builder {
@@ -31,4 +35,17 @@ interface AppComponent: AndroidInjector<App> {
     }
 
     override fun inject(application: App)
+
+    @MapKey
+    @Target(AnnotationTarget.FUNCTION)
+    @Retention(AnnotationRetention.RUNTIME)
+    annotation class WorkerKey(val value: KClass<out ListenableWorker>)
+
+    @Module
+    interface WorkerBindingModule {
+        @Binds
+        @IntoMap
+        @WorkerKey(DownloadWorker::class)
+        fun bindDownloadWorker(factory: DownloadWorker.Factory): ChildWorkerFactory
+    }
 }

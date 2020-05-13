@@ -1,29 +1,27 @@
 package com.example.quoteapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.work.OneTimeWorkRequest
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
+import androidx.work.*
+import androidx.work.Constraints.Builder
 import com.example.quoteapp.adapters.QuoteAdapter
-import com.example.quoteapp.api.ApiService
 import com.example.quoteapp.di.MainViewModelFactory
+import com.example.quoteapp.workers.DownloadWorker
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
+
+    private lateinit var workManager: WorkManager
 
     @Inject
     lateinit var factory: MainViewModelFactory
     private lateinit var viewModel: MainViewModel
 
     lateinit var adapter: QuoteAdapter
-
-    private lateinit var workManager: WorkManager
-    private lateinit var downloadWorkRequest: OneTimeWorkRequest
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,26 +32,33 @@ class MainActivity : BaseActivity() {
         adapter = QuoteAdapter()
         rvQuotes.adapter = adapter
 
+
+
+//        workManager = WorkManager.getInstance(applicationContext)
+//
+        val constraints: Constraints = Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+//
+//        val workRequest = PeriodicWorkRequest
+//            .Builder(DownloadWorker::class.java, 15, TimeUnit.MINUTES)
+//            .setConstraints(constraints)
+//            .build()
+//
+//        workManager.enqueue(workRequest)
+
+
+        WorkManager.getInstance(this).enqueue(
+            PeriodicWorkRequestBuilder<DownloadWorker>(15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build()
+        )
+
         viewModel.quoteList.observe(this, Observer {
             adapter.quoteList = it
         })
-
-//        downloadWorkRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
-//            .build()
-//
-//        workManager = WorkManager.getInstance(this)
-//        workManager.enqueue(downloadWorkRequest)
-
-
-//        viewModel.quote.observe(this, Observer {
-//            textView.text = it.toString()
-//        })
-
     }
 
-//    fun onClickShowQuote(view: View) {
-//        workManager.enqueue(downloadWorkRequest)
-//    }
 
     fun onClickUpdate(view: View){
         viewModel.loadNewQuote()

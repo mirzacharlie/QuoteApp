@@ -1,6 +1,7 @@
 package com.example.quoteapp.workers
 
 import android.content.Context
+import android.util.Log
 import androidx.work.ListenableWorker
 import androidx.work.Worker
 import androidx.work.WorkerParameters
@@ -14,13 +15,18 @@ class DownloadWorker constructor(
 ) : Worker(context, params) {
 
     override fun doWork(): Result {
-        repository.loadNewQuote()
-        return Result.success()
+        return try {
+            repository.loadNewQuotes()
+            Result.success()
+        } catch (e: Exception) {
+            Log.d("DOWNLOAD WORKER", "Exception: ${e.message}")
+            Result.retry()
+        }
     }
 
     class Factory @Inject constructor(
         private val repository: QuoteRepository
-    ): ChildWorkerFactory {
+    ) : ChildWorkerFactory {
 
         override fun create(appContext: Context, params: WorkerParameters): ListenableWorker {
             return DownloadWorker(appContext, params, repository)

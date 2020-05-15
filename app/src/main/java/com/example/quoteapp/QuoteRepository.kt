@@ -1,19 +1,18 @@
 package com.example.quoteapp
 
-import android.app.Application
-import com.example.quoteapp.api.ApiFactory
 import com.example.quoteapp.api.ApiService
-import com.example.quoteapp.data.AppDatabase
 import com.example.quoteapp.data.QuoteDao
 import com.example.quoteapp.pojo.Quote
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
-class QuoteRepository(private val apiService: ApiService, private val quoteDao: QuoteDao) : CoroutineScope {
+class QuoteRepository(private val apiService: ApiService, private val quoteDao: QuoteDao) :
+    CoroutineScope {
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
+    fun getAllQuotes() = quoteDao.getAllQuotes()
 
     //  Загружает и добавляет в БД 10 цитат
     fun loadNewQuotes() {
@@ -70,3 +69,4 @@ class QuoteRepository(private val apiService: ApiService, private val quoteDao: 
     }
 
 }
+

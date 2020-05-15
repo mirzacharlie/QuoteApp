@@ -10,8 +10,14 @@ interface QuoteDao {
     @Query("SELECT * FROM quotes ")
     fun getAllQuotes(): LiveData<List<Quote>>
 
+    @Query("SELECT * FROM quotes ORDER BY id DESC LIMIT 1")
+    suspend fun qetLastQuote(): Quote?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addQuote(quote: Quote)
+    fun addQuote(quote: Quote): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addQuoteList(quotes: List<Quote>)
 
     @Update
     fun updateQuote(quote: Quote)

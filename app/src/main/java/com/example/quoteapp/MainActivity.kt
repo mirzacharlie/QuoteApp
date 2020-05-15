@@ -32,21 +32,9 @@ class MainActivity : BaseActivity() {
         adapter = QuoteAdapter()
         rvQuotes.adapter = adapter
 
-
-
-//        workManager = WorkManager.getInstance(applicationContext)
-//
         val constraints: Constraints = Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
-//
-//        val workRequest = PeriodicWorkRequest
-//            .Builder(DownloadWorker::class.java, 15, TimeUnit.MINUTES)
-//            .setConstraints(constraints)
-//            .build()
-//
-//        workManager.enqueue(workRequest)
-
 
         WorkManager.getInstance(this).enqueue(
             PeriodicWorkRequestBuilder<DownloadWorker>(60, TimeUnit.MINUTES)
@@ -54,13 +42,14 @@ class MainActivity : BaseActivity() {
                 .build()
         )
 
+
         viewModel.quoteList.observe(this, Observer {
             adapter.quoteList = it
         })
     }
 
-
     fun onClickUpdate(view: View){
-        viewModel.loadNewQuote()
+
+        viewModel.loadNewQuotes()
     }
 }

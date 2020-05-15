@@ -49,7 +49,7 @@ class MainActivity : BaseActivity() {
 
 
         WorkManager.getInstance(this).enqueue(
-            PeriodicWorkRequestBuilder<DownloadWorker>(15, TimeUnit.MINUTES)
+            PeriodicWorkRequestBuilder<DownloadWorker>(60, TimeUnit.MINUTES)
                 .setConstraints(constraints)
                 .build()
         )

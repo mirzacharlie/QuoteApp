@@ -6,8 +6,8 @@ class MainViewModel(private val repository: QuoteRepository) : ViewModel() {
 
     var quoteList = repository.getAllQuotes()
 
-    fun loadNewQuote() {
-        repository.loadNewQuote()
+    fun loadNewQuotes() {
+        repository.loadNewQuotes()
     }
 
 }

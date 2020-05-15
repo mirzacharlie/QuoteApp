@@ -19,10 +19,6 @@ class AppModule {
         private const val BASE_URL = "https://api.forismatic.com/api/1.0/"
     }
 
-//    @Provides
-//    @Singleton
-//    fun provideApplication(app: App): Application = app
-
     @Provides
     @Singleton
     fun provideApplicationContext(app: App): Context = app.applicationContext
@@ -51,6 +47,5 @@ class AppModule {
     @Singleton
     @Provides
     fun provideAppDatabase(app: Application) = AppDatabase.getInstance(app)
-
 
 }

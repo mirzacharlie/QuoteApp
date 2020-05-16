@@ -3,19 +3,19 @@
     xmlns:tools = "http://schemas.android.com/tools"
     tools:context = "com.example.quoteapp.MainActivity">
     <item
-        android:id = "@+id/quote_list_fragment"
+        android:id = "@+id/quoteListFragment"
         android:title = "@string/quote_list"
         android:icon="@drawable/ic_list_white_24dp"
         android:orderInCategory = "100"
         />
     <item
-        android:id = "@+id/favourite_fragment"
+        android:id = "@+id/favouriteFragment"
         android:title = "@string/favourite"
         android:icon="@drawable/ic_favorite_white_24dp"
         android:orderInCategory = "100"
         />
     <item
-        android:id = "@+id/settings_fragment"
+        android:id = "@+id/settingsFragment"
         android:title = "@string/settings"
         android:icon="@drawable/ic_settings_white_24dp"
         android:orderInCategory = "100"

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:tools = "http://schemas.android.com/tools"
+    tools:context = "com.example.quoteapp.MainActivity">
+    <item
+        android:id = "@+id/quote_list_fragment"
+        android:title = "@string/quote_list"
+        android:icon="@drawable/ic_list_white_24dp"
+        android:orderInCategory = "100"
+        />
+    <item
+        android:id = "@+id/favourite_fragment"
+        android:title = "@string/favourite"
+        android:icon="@drawable/ic_favorite_white_24dp"
+        android:orderInCategory = "100"
+        />
+    <item
+        android:id = "@+id/settings_fragment"
+        android:title = "@string/settings"
+        android:icon="@drawable/ic_settings_white_24dp"
+        android:orderInCategory = "100"
+        />
+</menu>

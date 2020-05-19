@@ -17,6 +17,7 @@ import kotlin.reflect.KClass
     modules = [
         AppModule::class,
         AndroidSupportInjectionModule::class,
+        FragmentInjectorsModule::class,
         ViewModelModule::class,
         QuoteRepositoryModule::class,
         ActivityInjectorsModule::class,

@@ -4,18 +4,19 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import androidx.work.*
 import androidx.work.Constraints.Builder
 import com.example.quoteapp.adapters.QuoteAdapter
 import com.example.quoteapp.di.MainViewModelFactory
 import com.example.quoteapp.workers.DownloadWorker
-import kotlinx.android.synthetic.main.activity_main.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
-
-    private lateinit var workManager: WorkManager
 
     @Inject
     lateinit var factory: MainViewModelFactory
@@ -23,33 +24,36 @@ class MainActivity : BaseActivity() {
 
     lateinit var adapter: QuoteAdapter
 
+    private lateinit var host: NavHostFragment
+    private lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
-
-        adapter = QuoteAdapter()
-        rvQuotes.adapter = adapter
+        host = supportFragmentManager
+            .findFragmentById(R.id.navHostFragment) as NavHostFragment? ?: return
+        navController = host.navController
+        setUpBottomNav(navController)
 
         val constraints: Constraints = Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
 
         WorkManager.getInstance(this).enqueue(
-            PeriodicWorkRequestBuilder<DownloadWorker>(60, TimeUnit.MINUTES)
+            PeriodicWorkRequestBuilder<DownloadWorker>(15, TimeUnit.MINUTES)
                 .setConstraints(constraints)
                 .build()
         )
 
-
-        viewModel.quoteList.observe(this, Observer {
-            adapter.quoteList = it
-        })
     }
 
     fun onClickUpdate(view: View){
-
         viewModel.loadNewQuotes()
+    }
+
+    private fun setUpBottomNav(navController: NavController) {
+        val bottomNav = findViewById<BottomNavigationView>(R.id.navBar)
+        bottomNav?.setupWithNavController(navController)
     }
 }

@@ -36,26 +36,16 @@ class MainActivity : BaseActivity() {
         navController = host.navController
         setUpBottomNav(navController)
 
+        val constraints: Constraints = Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
 
-//        viewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
-//
-//        adapter = QuoteAdapter()
-//        rvQuotes.adapter = adapter
-//
-//        val constraints: Constraints = Builder()
-//            .setRequiredNetworkType(NetworkType.CONNECTED)
-//            .build()
-//
-//        WorkManager.getInstance(this).enqueue(
-//            PeriodicWorkRequestBuilder<DownloadWorker>(60, TimeUnit.MINUTES)
-//                .setConstraints(constraints)
-//                .build()
-//        )
-//
-//
-//        viewModel.quoteList.observe(this, Observer {
-//            adapter.quoteList = it
-//        })
+        WorkManager.getInstance(this).enqueue(
+            PeriodicWorkRequestBuilder<DownloadWorker>(15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build()
+        )
+
     }
 
     fun onClickUpdate(view: View){

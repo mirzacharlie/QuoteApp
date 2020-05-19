@@ -2,8 +2,6 @@ package com.example.quoteapp
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -11,6 +9,7 @@ import androidx.work.*
 import androidx.work.Constraints.Builder
 import com.example.quoteapp.adapters.QuoteAdapter
 import com.example.quoteapp.di.MainViewModelFactory
+import com.example.quoteapp.ui.quotelist.QuoteListViewModel
 import com.example.quoteapp.workers.DownloadWorker
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.concurrent.TimeUnit
@@ -20,7 +19,7 @@ class MainActivity : BaseActivity() {
 
     @Inject
     lateinit var factory: MainViewModelFactory
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: QuoteListViewModel
 
     lateinit var adapter: QuoteAdapter
 

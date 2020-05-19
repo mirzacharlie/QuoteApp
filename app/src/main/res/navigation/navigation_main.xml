@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/quoteListFragment"
-        android:name="com.example.quoteapp.QuoteListFragment"
+        android:name="com.example.quoteapp.ui.quotelist.QuoteListFragment"
         android:label="fragment_quote_list"
         tools:layout="@layout/fragment_quote_list" />
     <fragment
         android:id="@+id/favouriteFragment"
-        android:name="com.example.quoteapp.FavouriteFragment"
+        android:name="com.example.quoteapp.ui.favourite.FavouriteFragment"
         android:label="fragment_favourite"
         tools:layout="@layout/fragment_favourite" />
     <fragment

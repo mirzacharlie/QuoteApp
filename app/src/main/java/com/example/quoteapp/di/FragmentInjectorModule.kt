@@ -1,6 +1,8 @@
 package com.example.quoteapp.di
 
-import com.example.quoteapp.QuoteListFragment
+import com.example.quoteapp.ui.settings.SettingsFragment
+import com.example.quoteapp.ui.favourite.FavouriteFragment
+import com.example.quoteapp.ui.quotelist.QuoteListFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -8,6 +10,12 @@ import dagger.android.ContributesAndroidInjector
 abstract class FragmentInjectorsModule {
 
     @ContributesAndroidInjector
-    abstract fun quoteLisstFragmentInjector(): QuoteListFragment
+    abstract fun quoteListFragmentInjector(): QuoteListFragment
+
+    @ContributesAndroidInjector
+    abstract fun favouriteFragmentInjector(): FavouriteFragment
+
+    @ContributesAndroidInjector
+    abstract fun settingsFragmentInjector(): SettingsFragment
 
 }

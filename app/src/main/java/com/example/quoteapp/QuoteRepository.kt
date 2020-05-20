@@ -14,6 +14,8 @@ class QuoteRepository(private val apiService: ApiService, private val quoteDao: 
 
     fun getAllQuotes() = quoteDao.getAllQuotes()
 
+    fun getFavouriteQuotes() = quoteDao.getFavouriteQuotes()
+
     //  Загружает и добавляет в БД 10 цитат
     fun loadNewQuotes() {
         launch {
@@ -29,6 +31,20 @@ class QuoteRepository(private val apiService: ApiService, private val quoteDao: 
                 }
             }
             insertQuoteList(quoteList)
+        }
+    }
+
+    fun addToFavourite(quote: Quote){
+        launch {
+            quote.isFavourite = 1
+            updateQuote(quote)
+        }
+    }
+
+    fun removeFromFavourite(quote: Quote){
+        launch {
+            quote.isFavourite = 0
+            updateQuote(quote)
         }
     }
 
@@ -59,6 +75,12 @@ class QuoteRepository(private val apiService: ApiService, private val quoteDao: 
     private suspend fun insertQuoteList(quotes: List<Quote>) {
         withContext(Dispatchers.IO) {
             quoteDao.addQuoteList(quotes)
+        }
+    }
+
+    private suspend fun updateQuote(quote: Quote){
+        withContext(Dispatchers.IO){
+            quoteDao.updateQuote(quote)
         }
     }
 

@@ -14,6 +14,10 @@ class DownloadWorker constructor(
     private val repository: QuoteRepository
 ) : Worker(context, params) {
 
+    companion object{
+        final val TAG = "Quote download worker"
+    }
+
     override fun doWork(): Result {
         return try {
             repository.loadNewQuotes()

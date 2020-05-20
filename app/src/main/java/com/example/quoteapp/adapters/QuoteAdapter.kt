@@ -10,11 +10,21 @@ import kotlinx.android.synthetic.main.item_quote.view.*
 
 class QuoteAdapter : RecyclerView.Adapter<QuoteAdapter.QuoteViewHolder>() {
 
+    lateinit var onQuoteClickListener: OnQuoteClickListener
+
     var quoteList: List<Quote> = listOf()
         set(value){
             field = value
             notifyDataSetChanged()
         }
+
+    interface OnQuoteClickListener {
+        fun onQuoteClick(position: Int)
+    }
+
+//    fun setOnQuoteLongClickListener(onQuoteLongClickListener: OnQuoteLongClickListener) {
+//        this.onQuoteLongClickListener = onQuoteLongClickListener
+//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuoteViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_quote, parent, false)
@@ -22,6 +32,7 @@ class QuoteAdapter : RecyclerView.Adapter<QuoteAdapter.QuoteViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: QuoteViewHolder, position: Int) {
+        holder.itemView.setOnClickListener { onQuoteClickListener.onQuoteClick(position) }
         val quote = quoteList[position]
 
         holder.tvQuote.text = quote.quoteText

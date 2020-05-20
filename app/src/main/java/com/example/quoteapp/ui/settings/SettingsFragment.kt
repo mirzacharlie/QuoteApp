@@ -68,7 +68,7 @@ class SettingsFragment : Fragment() {
                     currentRepeatInterval = REPEAT_INTERVAL_2
                 }
                 REPEAT_INTERVAL_3 ->{
-                    position = 0
+                    position = 3
                     currentRepeatInterval = REPEAT_INTERVAL_3
                 }
                 REPEAT_INTERVAL_4 ->{

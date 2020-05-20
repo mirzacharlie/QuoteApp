@@ -1,6 +1,6 @@
 package com.example.quoteapp.di
 
-import com.example.quoteapp.SettingsFragment
+import com.example.quoteapp.ui.settings.SettingsFragment
 import com.example.quoteapp.ui.favourite.FavouriteFragment
 import com.example.quoteapp.ui.quotelist.QuoteListFragment
 import dagger.Module

@@ -8,17 +8,13 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import androidx.work.*
 import androidx.work.Constraints.Builder
-import com.example.quoteapp.di.MainViewModelFactory
 import com.example.quoteapp.utils.*
 import com.example.quoteapp.workers.DownloadWorker
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
 
-    @Inject
-    lateinit var factory: MainViewModelFactory
 
     private lateinit var host: NavHostFragment
     private lateinit var navController: NavController

@@ -1,4 +1,4 @@
-package com.example.quoteapp.ui.settings
+package com.example.quoteapp.screens.settings
 
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
@@ -11,10 +11,13 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.work.*
 import com.example.quoteapp.R
+import com.example.quoteapp.di.ViewModelInjection
+import com.example.quoteapp.screens.quotelist.QuoteListVM
 import com.example.quoteapp.utils.*
 import com.example.quoteapp.workers.DownloadWorker
 import kotlinx.android.synthetic.main.fragment_settings.*
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,6 +32,10 @@ class SettingsFragment : Fragment() {
 
     private lateinit var pref: SharedPreferences
     private var currentRepeatInterval = REPEAT_INTERVAL_0
+
+    @Inject
+    @ViewModelInjection
+    lateinit var viewModel: SettingsVM
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

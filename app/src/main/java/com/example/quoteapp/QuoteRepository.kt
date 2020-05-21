@@ -6,8 +6,10 @@ import com.example.quoteapp.pojo.Quote
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
-class QuoteRepository(private val apiService: ApiService, private val quoteDao: QuoteDao) :
-    CoroutineScope {
+class QuoteRepository(
+    private val apiService: ApiService,
+    private val quoteDao: QuoteDao
+    ) : CoroutineScope {
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
@@ -20,13 +22,13 @@ class QuoteRepository(private val apiService: ApiService, private val quoteDao: 
     fun loadNewQuotes() {
         launch {
             val quoteList: MutableList<Quote> = mutableListOf()
-            val startKey = getLastQuoteId()+1
+            val startKey = getLastQuoteId() + 1
 
-            while (quoteList.size < 10){
+            while (quoteList.size < 10) {
                 val quote = withContext(Dispatchers.Default) {
-                    apiService.loadNewQuoteFromInternet(key = (startKey+quoteList.size).toString())
+                    apiService.loadNewQuoteFromInternet(key = (startKey + quoteList.size).toString())
                 }
-                if(validate(quote)){
+                if (validate(quote)) {
                     quoteList.add(quote)
                 }
             }
@@ -34,14 +36,14 @@ class QuoteRepository(private val apiService: ApiService, private val quoteDao: 
         }
     }
 
-    fun addToFavourite(quote: Quote){
+    fun addToFavourite(quote: Quote) {
         launch {
             quote.isFavourite = 1
             updateQuote(quote)
         }
     }
 
-    fun removeFromFavourite(quote: Quote){
+    fun removeFromFavourite(quote: Quote) {
         launch {
             quote.isFavourite = 0
             updateQuote(quote)
@@ -59,7 +61,7 @@ class QuoteRepository(private val apiService: ApiService, private val quoteDao: 
     //  Возвращает Id последней записи или 0 при пустоой таблице
     private suspend fun getLastQuoteId(): Long {
         val quote = coroutineScope { async { quoteDao.qetLastQuote() } }.await()
-        return if(quote?.id != null){
+        return if (quote?.id != null) {
             quote.id
         } else {
             0L
@@ -78,8 +80,8 @@ class QuoteRepository(private val apiService: ApiService, private val quoteDao: 
         }
     }
 
-    private suspend fun updateQuote(quote: Quote){
-        withContext(Dispatchers.IO){
+    private suspend fun updateQuote(quote: Quote) {
+        withContext(Dispatchers.IO) {
             quoteDao.updateQuote(quote)
         }
     }

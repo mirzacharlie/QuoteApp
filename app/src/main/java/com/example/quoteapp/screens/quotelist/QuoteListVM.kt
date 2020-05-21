@@ -1,10 +1,12 @@
-package com.example.quoteapp.ui.quotelist
+package com.example.quoteapp.screens.quotelist
 
 import androidx.lifecycle.ViewModel
+import com.example.quoteapp.BaseViewModel
 import com.example.quoteapp.QuoteRepository
 import com.example.quoteapp.pojo.Quote
+import javax.inject.Inject
 
-class QuoteListViewModel(private val repository: QuoteRepository) : ViewModel() {
+class QuoteListVM @Inject constructor(private val repository: QuoteRepository) : BaseViewModel() {
 
     var quoteList = repository.getAllQuotes()
 

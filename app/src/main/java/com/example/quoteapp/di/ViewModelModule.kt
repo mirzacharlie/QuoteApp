@@ -5,11 +5,11 @@ import com.example.quoteapp.api.ApiService
 import dagger.Module
 import dagger.Provides
 
-@Module
-class ViewModelModule {
-
-    @Provides
-    fun providesMainViewModelFactory(quoteRepository: QuoteRepository): MainViewModelFactory {
-        return MainViewModelFactory(quoteRepository)
-    }
-}
+//@Module
+//class ViewModelModule {
+//
+//    @Provides
+//    fun providesMainViewModelFactory(quoteRepository: QuoteRepository): MainViewModelFactory {
+//        return MainViewModelFactory(quoteRepository)
+//    }
+//}

@@ -1,10 +1,11 @@
-package com.example.quoteapp.ui.favourite
+package com.example.quoteapp.screens.favourite
 
-import androidx.lifecycle.ViewModel
+import com.example.quoteapp.BaseViewModel
 import com.example.quoteapp.QuoteRepository
 import com.example.quoteapp.pojo.Quote
+import javax.inject.Inject
 
-class FavouriteViewModel(private val repository: QuoteRepository) : ViewModel() {
+class FavouriteVM @Inject constructor(private val repository: QuoteRepository) : BaseViewModel() {
 
     var favouriteQuoteList = repository.getFavouriteQuotes()
 

@@ -18,7 +18,7 @@ import kotlin.reflect.KClass
         AppModule::class,
         AndroidSupportInjectionModule::class,
         FragmentInjectorsModule::class,
-        ViewModelModule::class,
+//        ViewModelModule::class,
         QuoteRepositoryModule::class,
         ActivityInjectorsModule::class,
         AppComponent.WorkerBindingModule::class

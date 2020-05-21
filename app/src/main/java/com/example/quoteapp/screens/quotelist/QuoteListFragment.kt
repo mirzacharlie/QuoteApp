@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.quoteapp.BaseFragment
 import com.example.quoteapp.R
+import com.example.quoteapp.SyncManager
 import com.example.quoteapp.adapters.QuoteAdapter
 import com.example.quoteapp.di.ViewModelInjection
 import kotlinx.android.synthetic.main.fragment_quote_list.*
@@ -33,6 +34,9 @@ class QuoteListFragment : BaseFragment(R.layout.fragment_quote_list) {
     @Inject
     @ViewModelInjection
     lateinit var viewModel: QuoteListVM
+
+    @Inject
+    lateinit var syncManager: SyncManager
 
     lateinit var adapter: QuoteAdapter
 

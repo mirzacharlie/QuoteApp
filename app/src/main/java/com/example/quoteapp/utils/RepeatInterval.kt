@@ -8,9 +8,18 @@ enum class RepeatInterval(val interval: Int){
     INTERVAL_4(24);
 
     companion object{
-        fun valueOf(value: Int): RepeatInterval {
+        fun byInterval(interval: Int): RepeatInterval {
             for (i in values()) {
-                if (value == i.interval) {
+                if (interval == i.interval) {
+                    return i
+                }
+            }
+            return INTERVAL_0
+        }
+
+        fun byPosition(position: Int): RepeatInterval{
+            for (i in values()){
+                if (position == i.ordinal){
                     return i
                 }
             }

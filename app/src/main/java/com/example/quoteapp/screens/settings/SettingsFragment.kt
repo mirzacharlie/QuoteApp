@@ -90,34 +90,38 @@ class SettingsFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                var selectedInterval = 0
 
-                when(position){
-                    0 -> selectedInterval = REPEAT_INTERVAL_0
-                    1 -> selectedInterval = REPEAT_INTERVAL_1
-                    2 -> selectedInterval = REPEAT_INTERVAL_2
-                    3 -> selectedInterval = REPEAT_INTERVAL_3
-                    4 -> selectedInterval = REPEAT_INTERVAL_4
-                }
+//                viewModel.setInterval(position)
 
-                    //Обновляю время синхронизации, если выбранное отличается от текущего
-                if (selectedInterval != currentRepeatInterval){
-                    val editor = pref.edit()
-                    editor.putInt(APP_PREFERENCES_REPEAT_INTERVAL, selectedInterval)
-                    editor.apply()
+//                var selectedInterval = 0
+//
+//                when(position){
+//                    0 -> selectedInterval = REPEAT_INTERVAL_0
+//                    1 -> selectedInterval = REPEAT_INTERVAL_1
+//                    2 -> selectedInterval = REPEAT_INTERVAL_2
+//                    3 -> selectedInterval = REPEAT_INTERVAL_3
+//                    4 -> selectedInterval = REPEAT_INTERVAL_4
+//                }
+//
+//                    //Обновляю время синхронизации, если выбранное отличается от текущего
+//                if (selectedInterval != currentRepeatInterval){
+//                    val editor = pref.edit()
+//                    editor.putInt(APP_PREFERENCES_REPEAT_INTERVAL, selectedInterval)
+//                    editor.apply()
+//
+//                    val constraints: Constraints = Constraints.Builder()
+//                        .setRequiredNetworkType(NetworkType.CONNECTED)
+//                        .build()
+//
+//                    val request = PeriodicWorkRequestBuilder<DownloadWorker>(selectedInterval.toLong(), TimeUnit.HOURS)
+//                        .setConstraints(constraints)
+//                        .build()
+//
+//                    WorkManager.getInstance(requireActivity()).enqueueUniquePeriodicWork(DownloadWorker.TAG,
+//                        ExistingPeriodicWorkPolicy.KEEP, request)
+//                    Log.d("WORK_MANAGER", "New repeat interval is: $selectedInterval hours")
+//                }
 
-                    val constraints: Constraints = Constraints.Builder()
-                        .setRequiredNetworkType(NetworkType.CONNECTED)
-                        .build()
-
-                    val request = PeriodicWorkRequestBuilder<DownloadWorker>(selectedInterval.toLong(), TimeUnit.HOURS)
-                        .setConstraints(constraints)
-                        .build()
-
-                    WorkManager.getInstance(requireActivity()).enqueueUniquePeriodicWork(DownloadWorker.TAG,
-                        ExistingPeriodicWorkPolicy.KEEP, request)
-                    Log.d("WORK_MANAGER", "New repeat interval is: $selectedInterval hours")
-                }
             }
         }
     }

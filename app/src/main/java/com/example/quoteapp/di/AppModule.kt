@@ -3,6 +3,7 @@ package com.example.quoteapp.di
 import android.app.Application
 import android.content.Context
 import com.example.quoteapp.App
+import com.example.quoteapp.SettingsManager
 import com.example.quoteapp.api.ApiService
 import com.example.quoteapp.data.AppDatabase
 import com.example.quoteapp.data.QuoteDao
@@ -47,5 +48,11 @@ class AppModule {
     @Singleton
     @Provides
     fun provideAppDatabase(app: Application) = AppDatabase.getInstance(app)
+
+    @Provides
+    @Singleton
+    fun provideSettingsManager(context: Context): SettingsManager{
+        return SettingsManager(context)
+    }
 
 }

@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.quoteapp.App
 import com.example.quoteapp.SettingsManager
-import com.example.quoteapp.SyncManager
 import com.example.quoteapp.api.ApiService
 import com.example.quoteapp.data.AppDatabase
 import com.example.quoteapp.data.QuoteDao
@@ -28,8 +27,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideApplicationContext(app: App): Context
-            = app.applicationContext
+    fun provideApplicationContext(app: App): Context = app.applicationContext
 
     @Provides
     @Singleton
@@ -42,18 +40,19 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun providesApi(retrofit: Retrofit): ApiService =
-        retrofit.create(ApiService::class.java)
+    fun providesApi(retrofit: Retrofit): ApiService {
+        return retrofit.create(ApiService::class.java)
+    }
 
     @Provides
     @Singleton
-    fun provideQuoteDao(appDatabase: AppDatabase): QuoteDao =
-        appDatabase.quoteDao()
+    fun provideQuoteDao(appDatabase: AppDatabase): QuoteDao{
+        return appDatabase.quoteDao()
+    }
 
     @Singleton
     @Provides
-    fun provideAppDatabase(app: Application): AppDatabase
-            = AppDatabase.getInstance(app)
+    fun provideAppDatabase(app: Application) = AppDatabase.getInstance(app)
 
     @Provides
     @Singleton
@@ -66,8 +65,4 @@ class AppModule {
     fun provideSharedPreference(app: Application): SharedPreferences =
         app.getSharedPreferences(APP_PREFERENCES, DaggerAppCompatActivity.MODE_PRIVATE)
 
-    @Provides
-    @Singleton
-    fun provideSyncManager(settingsManager: SettingsManager, app: Application): SyncManager =
-        SyncManager(settingsManager, app)
 }

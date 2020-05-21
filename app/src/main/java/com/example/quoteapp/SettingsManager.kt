@@ -8,11 +8,12 @@ import javax.inject.Inject
 
 class SettingsManager @Inject constructor(private val preferences: SharedPreferences) {
 
+
     private var currentRepeatInterval = RepeatInterval.INTERVAL_0
 
     init {
         if(preferences.contains(APP_PREFERENCES_REPEAT_INTERVAL)) {
-            currentRepeatInterval = RepeatInterval.byInterval(
+            currentRepeatInterval = RepeatInterval.valueOf(
                 preferences.getInt(APP_PREFERENCES_REPEAT_INTERVAL, RepeatInterval.INTERVAL_0.interval))
         }
     }

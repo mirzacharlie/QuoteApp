@@ -1,17 +1,22 @@
 package com.example.quoteapp.di
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import com.example.quoteapp.App
 import com.example.quoteapp.SettingsManager
 import com.example.quoteapp.api.ApiService
 import com.example.quoteapp.data.AppDatabase
 import com.example.quoteapp.data.QuoteDao
+import com.example.quoteapp.utils.APP_PREFERENCES
 import dagger.Module
 import dagger.Provides
+import dagger.android.support.DaggerAppCompatActivity
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
+
 
 @Module
 class AppModule {
@@ -51,8 +56,13 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideSettingsManager(context: Context): SettingsManager{
-        return SettingsManager(context)
+    fun provideSettingsManager(sharedPreferences: SharedPreferences): SettingsManager{
+        return SettingsManager(sharedPreferences)
     }
+
+    @Provides
+    @Singleton
+    fun provideSharedPreference(app: Application): SharedPreferences =
+        app.getSharedPreferences(APP_PREFERENCES, DaggerAppCompatActivity.MODE_PRIVATE)
 
 }

@@ -1,7 +1,8 @@
 package com.example.quoteapp.di
 
 import com.example.quoteapp.QuoteRepository
-import com.example.quoteapp.api.ApiService
+import com.example.quoteapp.api.ForismaticApiService
+import com.example.quoteapp.api.YandexApiService
 import com.example.quoteapp.data.QuoteDao
 import dagger.Module
 import dagger.Provides
@@ -12,7 +13,7 @@ class QuoteRepositoryModule {
 
     @Provides
     @Singleton
-    fun providesUserRepository(apiService: ApiService, quoteDao: QuoteDao): QuoteRepository {
-        return QuoteRepository(apiService, quoteDao)
+    fun providesQuoteRepository(forismaticApiService: ForismaticApiService, yandexApiService: YandexApiService, quoteDao: QuoteDao): QuoteRepository {
+        return QuoteRepository(forismaticApiService,  yandexApiService, quoteDao)
     }
 }

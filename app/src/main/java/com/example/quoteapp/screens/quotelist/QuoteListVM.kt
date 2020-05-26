@@ -16,6 +16,11 @@ class QuoteListVM @Inject constructor(private val repository: QuoteRepository) :
 
     fun addToFavourite(quote: Quote){
         repository.addToFavourite(quote)
+        printSearchResult()
+    }
+
+    fun printSearchResult(){
+        repository.printSearchResult()
     }
 
 }

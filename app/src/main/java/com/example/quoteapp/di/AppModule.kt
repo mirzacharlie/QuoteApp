@@ -8,12 +8,15 @@ import com.example.quoteapp.SettingsManager
 import com.example.quoteapp.SyncManager
 import com.example.quoteapp.api.ForismaticApiService
 import com.example.quoteapp.api.ForismaticApiService.Companion.FORISMATIC_BASE_URL
+import com.example.quoteapp.api.ImgDownloadService
 import com.example.quoteapp.api.YandexApiService
 import com.example.quoteapp.api.YandexApiService.Companion.YANDEX_BASE_URL
 import com.example.quoteapp.data.AppDatabase
+import com.example.quoteapp.data.AuthorDao
 import com.example.quoteapp.data.QuoteDao
 import com.example.quoteapp.utils.APP_PREFERENCES
 import com.example.quoteapp.utils.NAMED_FORISMATIC_RETROFIT
+import com.example.quoteapp.utils.NAMED_IMG_DOWNLOAD_RETROFIT
 import com.example.quoteapp.utils.NAMED_YANDEX_RETROFIT
 import dagger.Module
 import dagger.Provides
@@ -55,6 +58,15 @@ class AppModule {
 
     @Provides
     @Singleton
+    @Named(NAMED_IMG_DOWNLOAD_RETROFIT)
+    fun providesImgDownloadRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(YANDEX_BASE_URL)
+            .build()
+    }
+
+    @Provides
+    @Singleton
     fun providesForismaticApi(@Named(NAMED_FORISMATIC_RETROFIT)retrofit: Retrofit): ForismaticApiService =
         retrofit.create(ForismaticApiService::class.java)
 
@@ -65,8 +77,18 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun providesImgDownloadService(@Named(NAMED_IMG_DOWNLOAD_RETROFIT)retrofit: Retrofit): ImgDownloadService =
+        retrofit.create(ImgDownloadService::class.java)
+
+    @Provides
+    @Singleton
     fun provideQuoteDao(appDatabase: AppDatabase): QuoteDao =
         appDatabase.quoteDao()
+
+    @Provides
+    @Singleton
+    fun provideAuthorDao(appDatabase: AppDatabase): AuthorDao =
+        appDatabase.authorDao()
 
     @Singleton
     @Provides
@@ -75,9 +97,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideSettingsManager(sharedPreferences: SharedPreferences): SettingsManager{
-        return SettingsManager(sharedPreferences)
-    }
+    fun provideSettingsManager(sharedPreferences: SharedPreferences): SettingsManager =
+        SettingsManager(sharedPreferences)
 
     @Provides
     @Singleton

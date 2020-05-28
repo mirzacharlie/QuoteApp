@@ -1,19 +1,34 @@
 package com.example.quoteapp
 
+import android.R
+import android.content.Context
+import android.net.Uri
+import android.os.Environment
 import android.util.Log
 import com.example.quoteapp.api.ForismaticApiService
+import com.example.quoteapp.api.ImgDownloadService
 import com.example.quoteapp.api.YandexApiService
+import com.example.quoteapp.data.AuthorDao
 import com.example.quoteapp.data.QuoteDao
 import com.example.quoteapp.pojo.Quote
 import kotlinx.coroutines.*
+import okhttp3.ResponseBody
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
 import java.net.URLDecoder
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.regex.Pattern
 import kotlin.coroutines.CoroutineContext
 
 class QuoteRepository(
     private val forismaticApiService: ForismaticApiService,
     private val yandexApiService: YandexApiService,
-    private val quoteDao: QuoteDao
+    private val imgDownloadService: ImgDownloadService,
+    private val quoteDao: QuoteDao,
+    private val authorDao: AuthorDao,
+    private val context: Context
 ) : CoroutineScope {
 
     override val coroutineContext: CoroutineContext
@@ -115,6 +130,7 @@ class QuoteRepository(
         }
     }
 
+
     suspend fun downloadSearchResult(): String {
             val result = coroutineScope {
                 async {
@@ -124,5 +140,42 @@ class QuoteRepository(
         return result.await()
     }
 
+    fun downloadImg(url: String){
+        launch {
+            val response  = imgDownloadService.downloadImg(url).body()
+            saveFile(response)
+        }
+    }
+
+    private fun saveFile(body: ResponseBody?):String{
+        if (body==null)
+            return ""
+        var input: InputStream? = null
+        try {
+            input = body.byteStream()
+
+            val timeStamp: String = SimpleDateFormat("yyyyMMddHHmmss").format(Date())
+            val fileName = "PHOTO_" + timeStamp + "_"
+            val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            val file = File.createTempFile(fileName, ".tmp", storageDir)
+
+            val fos = FileOutputStream(file)
+            fos.use { output ->
+                val buffer = ByteArray(4 * 1024) // or other buffer size
+                var read: Int
+                while (input.read(buffer).also { read = it } != -1) {
+                    output.write(buffer, 0, read)
+                }
+                output.flush()
+            }
+            return Uri.fromFile(file).toString()
+        }catch (e:Exception){
+            Log.e("saveFile",e.toString())
+        }
+        finally {
+            input?.close()
+        }
+        return ""
+    }
 }
 

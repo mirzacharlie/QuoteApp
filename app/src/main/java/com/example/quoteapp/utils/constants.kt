@@ -5,3 +5,4 @@ const val APP_PREFERENCES_REPEAT_INTERVAL = "repeat interval"
 
 const val NAMED_YANDEX_RETROFIT = "YandexRetrofit"
 const val NAMED_FORISMATIC_RETROFIT = "ForismaticRetrofit"
+const val NAMED_IMG_DOWNLOAD_RETROFIT = "ImgDownloadRetrofit"

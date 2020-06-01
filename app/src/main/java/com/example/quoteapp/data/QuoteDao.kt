@@ -13,7 +13,7 @@ interface QuoteDao {
     @Query("SELECT * FROM quotes WHERE isFavourite = 1")
     fun getFavouriteQuotes(): LiveData<List<Quote>>
 
-    @Query("SELECT * FROM quotes ORDER BY id DESC LIMIT 1")
+    @Query("SELECT * FROM quotes ORDER BY quoteId DESC LIMIT 1")
     suspend fun qetLastQuote(): Quote?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -24,4 +24,5 @@ interface QuoteDao {
 
     @Update
     fun updateQuote(quote: Quote)
+
 }

@@ -5,7 +5,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "authors")
 data class Author(
+
     @PrimaryKey(autoGenerate = false)
-    val name: String,
+    val authorName: String,
+
     var imgUri: String
 )

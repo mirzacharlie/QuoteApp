@@ -1,15 +1,16 @@
 package com.example.quoteapp
 
-import android.R
 import android.content.Context
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.example.quoteapp.api.ForismaticApiService
 import com.example.quoteapp.api.ImgDownloadService
 import com.example.quoteapp.api.YandexApiService
 import com.example.quoteapp.data.AuthorDao
 import com.example.quoteapp.data.QuoteDao
+import com.example.quoteapp.pojo.Author
 import com.example.quoteapp.pojo.Quote
 import kotlinx.coroutines.*
 import okhttp3.ResponseBody
@@ -38,21 +39,45 @@ class QuoteRepository(
 
     fun getFavouriteQuotes() = quoteDao.getFavouriteQuotes()
 
+    var author = MutableLiveData<Author>()
+
+    fun initializeAuthor(name: String){
+        launch {
+            author.value = getAuthorFromDb(name)
+        }
+    }
+
+    private suspend fun getAuthorFromDb(name: String): Author? {
+        return withContext(Dispatchers.IO){
+            val author = authorDao.getAuthor(name)
+            author
+        }
+    }
+
     //  Загружает и добавляет в БД 10 цитат
     fun loadNewQuotes() {
-        launch {
+        runBlocking {
             val quoteList: MutableList<Quote> = mutableListOf()
+            val authorList: MutableList<Author> = mutableListOf()
             val startKey = getLastQuoteId() + 1
 
             while (quoteList.size < 10) {
-                val quote = withContext(Dispatchers.Default) {
+                val quote = withContext(Dispatchers.IO) {
                     forismaticApiService.getQuote(key = (startKey + quoteList.size).toString())
                 }
                 if (validate(quote)) {
+                    var author: Author? = authorDao.getAuthor(quote.quoteAuthor)
+                    if (author == null) {
+                       author = withContext(Dispatchers.IO){
+                           createAuthor(quote.quoteAuthor)
+                       }
+                    }
                     quoteList.add(quote)
+                    authorList.add(author)
                 }
             }
             insertQuoteList(quoteList)
+            insertAuthorList(authorList)
         }
     }
 
@@ -78,21 +103,17 @@ class QuoteRepository(
         }
     }
 
+
     //  Возвращает Id последней записи или 0 при пустоой таблице
     private suspend fun getLastQuoteId(): Long {
         val quote = coroutineScope { async { quoteDao.qetLastQuote() } }.await()
-        return if (quote?.id != null) {
-            quote.id
+        return if (quote?.quoteId != null) {
+            quote.quoteId
         } else {
             0L
         }
     }
 
-    private suspend fun insertQuote(quote: Quote) {
-        withContext(Dispatchers.IO) {
-            quoteDao.addQuote(quote)
-        }
-    }
 
     private suspend fun insertQuoteList(quotes: List<Quote>) {
         withContext(Dispatchers.IO) {
@@ -108,47 +129,60 @@ class QuoteRepository(
 
     //  Возвращает True если текст и автор не пустые
     private fun validate(quote: Quote): Boolean {
-        return quote.quoteText != null && quote.quoteText.isNotEmpty() &&
-                quote.quoteAuthor != null && quote.quoteAuthor.isNotEmpty()
+        return quote.quoteText.isNotEmpty() && quote.quoteAuthor.isNotEmpty()
     }
 
-    fun printSearchResult(){
-        launch {
-            val raw = downloadSearchResult()
-            var pattern: Pattern = Pattern.compile("поиска</h1>(.*?)alt=")
-            var matcher = pattern.matcher(raw)
-            if(matcher.find()){
-                val temp = matcher.group(1)
-                pattern = Pattern.compile("img_url=(.*?)&amp")
-                matcher = pattern.matcher(temp)
-                if (matcher.find()){
-                    val imgUrl = matcher.group(1)
-                    val decodedUrl = URLDecoder.decode(imgUrl, "UTF-8")
-                    Log.d("RESULT", decodedUrl)
-                }
+    private suspend fun createAuthor(name: String): Author {
+        val imgUri = coroutineScope {
+            async {
+                downloadImg(getImgUrl(name))
             }
+        }
+        return Author(name, imgUri.await())
+    }
+
+    private suspend fun insertAuthorList(authors: List<Author>){
+        withContext(Dispatchers.IO){
+            authorDao.addAuthorList(authors)
         }
     }
 
-
-    suspend fun downloadSearchResult(): String {
-            val result = coroutineScope {
-                async {
-                    yandexApiService.getSearchResult(text = "путин")
-                }
+    //Возвращает url первой картинки из результатов поиска
+    suspend fun getImgUrl(name: String): String {
+        val raw = downloadSearchResult(name)
+        var pattern: Pattern = Pattern.compile("поиска</h1>(.*?)alt=")
+        var matcher = pattern.matcher(raw)
+        if (matcher.find()) {
+            val temp = matcher.group(1)
+            pattern = Pattern.compile("img_url=(.*?)&amp")
+            matcher = pattern.matcher(temp)
+            if (matcher.find()) {
+                val imgUrl = matcher.group(1)
+                val decodedUrl = URLDecoder.decode(imgUrl, "UTF-8")
+                Log.d("RESULT", decodedUrl)
+                return decodedUrl
             }
+        }
+        return ""
+    }
+
+    private suspend fun downloadSearchResult(name: String): String {
+        val result = coroutineScope {
+            async {
+                yandexApiService.getSearchResult(text = name)
+            }
+        }
         return result.await()
     }
 
-    fun downloadImg(url: String){
-        launch {
-            val response  = imgDownloadService.downloadImg(url).body()
-            saveFile(response)
-        }
+    suspend fun downloadImg(url: String): String {
+        val response = imgDownloadService.downloadImg(url).body()
+        val imgUrl = coroutineScope { async { saveFile(response) } }
+        return imgUrl.await()
     }
 
-    private fun saveFile(body: ResponseBody?):String{
-        if (body==null)
+    private fun saveFile(body: ResponseBody?): String {
+        if (body == null)
             return ""
         var input: InputStream? = null
         try {
@@ -169,10 +203,9 @@ class QuoteRepository(
                 output.flush()
             }
             return Uri.fromFile(file).toString()
-        }catch (e:Exception){
-            Log.e("saveFile",e.toString())
-        }
-        finally {
+        } catch (e: Exception) {
+            Log.e("saveFile", e.toString())
+        } finally {
             input?.close()
         }
         return ""

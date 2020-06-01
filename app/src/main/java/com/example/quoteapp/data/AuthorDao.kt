@@ -10,9 +10,12 @@ interface AuthorDao {
     @Query("SELECT * FROM authors ")
     fun getAllAuthors(): LiveData<List<Author>>
 
-    @Query("SELECT * FROM authors WHERE name = :aName")
-    fun getAuthor(aName: String): Author
+    @Query("SELECT * FROM authors WHERE authorName = :aName")
+    fun getAuthor(aName: String): Author?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addAuthor(author: Author): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addAuthorList(quotes: List<Author>)
 }

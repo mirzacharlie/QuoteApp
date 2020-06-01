@@ -1,5 +1,7 @@
 package com.example.quoteapp.di
 
+import com.example.quoteapp.screens.detail.DetailFragment
+import com.example.quoteapp.screens.detail.DetailModule
 import com.example.quoteapp.screens.settings.SettingsFragment
 import com.example.quoteapp.screens.favourite.FavouriteFragment
 import com.example.quoteapp.screens.favourite.FavouriteModule
@@ -21,4 +23,6 @@ abstract class FragmentInjectorsModule {
     @ContributesAndroidInjector(modules = [SettingsModule::class])
     abstract fun settingsFragmentInjector(): SettingsFragment
 
+    @ContributesAndroidInjector(modules = [DetailModule::class])
+    abstract fun detailFragmentInjector(): DetailFragment
 }

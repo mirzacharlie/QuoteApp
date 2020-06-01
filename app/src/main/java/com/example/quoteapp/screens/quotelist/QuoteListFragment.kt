@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.quoteapp.BaseFragment
 import com.example.quoteapp.R
 import com.example.quoteapp.SyncManager
 import com.example.quoteapp.adapters.QuoteAdapter
 import com.example.quoteapp.di.ViewModelInjection
+import com.example.quoteapp.screens.detail.DetailFragment
 import kotlinx.android.synthetic.main.fragment_quote_list.*
 import javax.inject.Inject
 
@@ -64,14 +66,27 @@ class QuoteListFragment : BaseFragment(R.layout.fragment_quote_list) {
         rvQuotes.adapter = adapter
         adapter.onQuoteClickListener = object : QuoteAdapter.OnQuoteClickListener{
             override fun onQuoteClick(position: Int) {
+
+                val action = QuoteListFragmentDirections
+                        .actionQuoteListFragmentToDetailFragment(adapter.quoteList[position]
+                            .quoteAuthor, adapter.quoteList[position].quoteText )
+
+                findNavController().navigate(action)
+            }
+        }
+
+        adapter.onQuoteLongClickListener = object : QuoteAdapter.OnQuoteLongClickListener{
+            override fun onQuoteLongClick(position: Int): Boolean {
                 viewModel.addToFavourite(adapter.quoteList[position])
-                Toast.makeText(context, "Quote ${adapter.quoteList[position].id}", Toast.LENGTH_LONG).show()
+                return true
             }
         }
 
         viewModel.quoteList.observe(viewLifecycleOwner, Observer {
             adapter.quoteList = it
         })
+
+        fabLoad.setOnClickListener { viewModel.loadNewQuotes() }
     }
 
     companion object {

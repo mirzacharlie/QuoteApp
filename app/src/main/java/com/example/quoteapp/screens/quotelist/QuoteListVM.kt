@@ -1,6 +1,5 @@
 package com.example.quoteapp.screens.quotelist
 
-import androidx.lifecycle.ViewModel
 import com.example.quoteapp.BaseViewModel
 import com.example.quoteapp.QuoteRepository
 import com.example.quoteapp.pojo.Quote
@@ -16,11 +15,6 @@ class QuoteListVM @Inject constructor(private val repository: QuoteRepository) :
 
     fun addToFavourite(quote: Quote){
         repository.addToFavourite(quote)
-        printSearchResult()
-    }
-
-    fun printSearchResult(){
-        repository.printSearchResult()
     }
 
 }

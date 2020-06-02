@@ -10,6 +10,12 @@ class DetailVM @Inject constructor(private val repository: QuoteRepository) : Ba
 
     var author = repository.author
 
+    var quoteWithAuthor = repository.quoteWithAuthor
+
+    fun setQuoteWithAuthor(id: Long){
+        repository.initQuoteWithAuthor(id)
+    }
+
     fun setAuthor(name: String) {
         repository.initializeAuthor(name)
     }

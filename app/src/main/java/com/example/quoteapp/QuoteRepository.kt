@@ -12,6 +12,7 @@ import com.example.quoteapp.data.AuthorDao
 import com.example.quoteapp.data.QuoteDao
 import com.example.quoteapp.pojo.Author
 import com.example.quoteapp.pojo.Quote
+import com.example.quoteapp.pojo.QuoteWithAuthor
 import kotlinx.coroutines.*
 import okhttp3.ResponseBody
 import java.io.File
@@ -41,9 +42,24 @@ class QuoteRepository(
 
     var author = MutableLiveData<Author>()
 
+    var quoteWithAuthor = MutableLiveData<QuoteWithAuthor>()
+
     fun initializeAuthor(name: String){
         launch {
             author.value = getAuthorFromDb(name)
+        }
+    }
+
+    fun initQuoteWithAuthor(id: Long){
+        launch {
+            quoteWithAuthor.value = getQuoteWithAuthorFromDb(id)
+        }
+    }
+
+    private suspend fun getQuoteWithAuthorFromDb(id: Long): QuoteWithAuthor{
+        return withContext(Dispatchers.IO){
+            val quoteWithAuthor = quoteDao.getQuoteWithAuthor(id)
+            quoteWithAuthor
         }
     }
 
@@ -56,28 +72,33 @@ class QuoteRepository(
 
     //  Загружает и добавляет в БД 10 цитат
     fun loadNewQuotes() {
-        runBlocking {
+        launch(Dispatchers.IO) {
             val quoteList: MutableList<Quote> = mutableListOf()
             val authorList: MutableList<Author> = mutableListOf()
             val startKey = getLastQuoteId() + 1
 
             while (quoteList.size < 10) {
                 val quote = withContext(Dispatchers.IO) {
+//                    Log.d("LoadNewQuotes()", "forismaticApiService.getQuote()")
                     forismaticApiService.getQuote(key = (startKey + quoteList.size).toString())
                 }
                 if (validate(quote)) {
-                    var author: Author? = authorDao.getAuthor(quote.quoteAuthor)
-                    if (author == null) {
-                       author = withContext(Dispatchers.IO){
-                           createAuthor(quote.quoteAuthor)
-                       }
-                    }
+                        var author: Author? = withContext(Dispatchers.IO) {
+//                            Log.d("LoadNewQuotes()", "authorDao.getAuthor")
+                            authorDao.getAuthor(quote.quoteAuthor)
+                        }
+                        if (author == null) {
+//                            Log.d("LoadNewQuotes()", "createAuthor()")
+                                author = createAuthor(quote.quoteAuthor)
+                        }
                     quoteList.add(quote)
                     authorList.add(author)
                 }
+//                Log.d("LoadNewQuotes()", "quoteList: ${quoteList.size}, authorList: ${authorList.size}")
             }
             insertQuoteList(quoteList)
             insertAuthorList(authorList)
+//            Log.d("LoadNewQuotes()", "Finished")
         }
     }
 
@@ -148,7 +169,7 @@ class QuoteRepository(
     }
 
     //Возвращает url первой картинки из результатов поиска
-    suspend fun getImgUrl(name: String): String {
+    private suspend fun getImgUrl(name: String): String {
         val raw = downloadSearchResult(name)
         var pattern: Pattern = Pattern.compile("поиска</h1>(.*?)alt=")
         var matcher = pattern.matcher(raw)
@@ -175,7 +196,7 @@ class QuoteRepository(
         return result.await()
     }
 
-    suspend fun downloadImg(url: String): String {
+    private suspend fun downloadImg(url: String): String {
         val response = imgDownloadService.downloadImg(url).body()
         val imgUrl = coroutineScope { async { saveFile(response) } }
         return imgUrl.await()

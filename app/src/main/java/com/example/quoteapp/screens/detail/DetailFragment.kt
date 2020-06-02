@@ -28,11 +28,11 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.setAuthor(args.author)
-        tvAuthor.text = args.author
-        tvQuote.text = args.quote
+        viewModel.setQuoteWithAuthor(args.id)
 
-        viewModel.author.observe(viewLifecycleOwner, Observer {
+        viewModel.quoteWithAuthor.observe(viewLifecycleOwner, Observer {
+            tvQuote.text = it.quoteText
+            tvAuthor.text = it.quoteAuthor
             ivPhoto.load(it.imgUri)
         })
     }

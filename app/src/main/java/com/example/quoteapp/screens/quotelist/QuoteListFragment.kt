@@ -67,11 +67,13 @@ class QuoteListFragment : BaseFragment(R.layout.fragment_quote_list) {
         adapter.onQuoteClickListener = object : QuoteAdapter.OnQuoteClickListener{
             override fun onQuoteClick(position: Int) {
 
-                val action = QuoteListFragmentDirections
-                        .actionQuoteListFragmentToDetailFragment(adapter.quoteList[position]
-                            .quoteAuthor, adapter.quoteList[position].quoteText )
-
-                findNavController().navigate(action)
+                val action = adapter.quoteList[position].quoteId?.let {
+                    QuoteListFragmentDirections
+                        .actionQuoteListFragmentToDetailFragment(it)
+                }
+                if (action != null) {
+                    findNavController().navigate(action)
+                }
             }
         }
 

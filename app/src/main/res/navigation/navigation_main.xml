@@ -33,9 +33,7 @@
         android:name="com.example.quoteapp.screens.detail.DetailFragment"
         android:label="DetailFragment" >
         <argument
-            android:name="author"
-            app:argType="string" />
-        <argument android:name="quote"
-            app:argType="string" />
+            android:name="id"
+            app:argType="long" />
     </fragment>
 </navigation>

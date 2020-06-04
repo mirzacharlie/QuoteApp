@@ -8,24 +8,20 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.work.WorkInfo
 import com.example.quoteapp.BaseFragment
 import com.example.quoteapp.R
 import com.example.quoteapp.SyncManager
 import com.example.quoteapp.adapters.QuoteAdapter
 import com.example.quoteapp.di.ViewModelInjection
+import com.example.quoteapp.screens.detail.DetailFragment
 import kotlinx.android.synthetic.main.fragment_quote_list.*
 import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [QuoteListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class QuoteListFragment : BaseFragment(R.layout.fragment_quote_list) {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -34,9 +30,6 @@ class QuoteListFragment : BaseFragment(R.layout.fragment_quote_list) {
     @Inject
     @ViewModelInjection
     lateinit var viewModel: QuoteListVM
-
-    @Inject
-    lateinit var syncManager: SyncManager
 
     lateinit var adapter: QuoteAdapter
 
@@ -53,37 +46,55 @@ class QuoteListFragment : BaseFragment(R.layout.fragment_quote_list) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return inflater.inflate(R.layout.fragment_quote_list, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        fabLoad.setOnClickListener { viewModel.loadNewQuotes() }
 
         adapter = QuoteAdapter()
         rvQuotes.adapter = adapter
-        adapter.onQuoteClickListener = object : QuoteAdapter.OnQuoteClickListener{
+        adapter.onQuoteClickListener = object : QuoteAdapter.OnQuoteClickListener {
             override fun onQuoteClick(position: Int) {
+
+                val action = adapter.quoteList[position].quoteId?.let {
+                    QuoteListFragmentDirections
+                        .actionQuoteListFragmentToDetailFragment(it)
+                }
+                if (action != null) {
+                    findNavController().navigate(action)
+                }
+            }
+        }
+
+        adapter.onQuoteLongClickListener = object : QuoteAdapter.OnQuoteLongClickListener {
+            override fun onQuoteLongClick(position: Int): Boolean {
                 viewModel.addToFavourite(adapter.quoteList[position])
-                Toast.makeText(context, "Quote ${adapter.quoteList[position].id}", Toast.LENGTH_LONG).show()
+                return true
             }
         }
 
         viewModel.quoteList.observe(viewLifecycleOwner, Observer {
             adapter.quoteList = it
         })
+
+        viewModel.status.observe(viewLifecycleOwner, Observer<List<WorkInfo>> { workInfo ->
+            val currentWorkStatus = workInfo?.getOrNull(0)
+
+            var isWorkActive = false
+            if (currentWorkStatus?.state == WorkInfo.State.RUNNING) {
+                isWorkActive = true
+            } else if (currentWorkStatus?.state == WorkInfo.State.ENQUEUED) {
+                isWorkActive = false
+            }
+
+            progressBar.visibility = if (isWorkActive) View.VISIBLE else View.GONE
+        })
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment QuoteListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             QuoteListFragment().apply {

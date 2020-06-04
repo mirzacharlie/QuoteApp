@@ -3,6 +3,7 @@ package com.example.quoteapp.data
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.quoteapp.pojo.Quote
+import com.example.quoteapp.pojo.QuoteWithAuthor
 
 @Dao
 interface QuoteDao {
@@ -13,7 +14,7 @@ interface QuoteDao {
     @Query("SELECT * FROM quotes WHERE isFavourite = 1")
     fun getFavouriteQuotes(): LiveData<List<Quote>>
 
-    @Query("SELECT * FROM quotes ORDER BY id DESC LIMIT 1")
+    @Query("SELECT * FROM quotes ORDER BY quoteId DESC LIMIT 1")
     suspend fun qetLastQuote(): Quote?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -24,4 +25,10 @@ interface QuoteDao {
 
     @Update
     fun updateQuote(quote: Quote)
+
+    @Query("SELECT quotes.quoteId, quotes.quoteAuthor, quotes.quoteText, quotes.isFavourite, authors.imgUri " +
+        "FROM quotes " +
+        "INNER JOIN authors ON authors.authorName = quotes.quoteAuthor " +
+        "WHERE quotes.quoteId = :id")
+    fun getQuoteWithAuthor(id: Long): QuoteWithAuthor
 }

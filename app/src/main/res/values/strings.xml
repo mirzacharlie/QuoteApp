@@ -3,6 +3,7 @@
     <string name="quote_list">Цитаты</string>
     <string name="favourite">Избранное</string>
     <string name="settings">Настройки</string>
+    <string name="author_image">изображение автора</string>
 
     <string-array name="download_time">
         <item>1 час</item>

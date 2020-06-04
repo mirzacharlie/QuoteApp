@@ -13,16 +13,9 @@ import com.example.quoteapp.di.ViewModelInjection
 import kotlinx.android.synthetic.main.fragment_favourite.*
 import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FavouriteFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FavouriteFragment : BaseFragment(R.layout.fragment_favourite) {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -68,14 +61,6 @@ class FavouriteFragment : BaseFragment(R.layout.fragment_favourite) {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FavouriteFragment.
-         */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =

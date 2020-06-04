@@ -4,9 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.quoteapp.pojo.Author
 import com.example.quoteapp.pojo.Quote
 
-@Database(entities = [Quote::class], version = 1, exportSchema = false)
+@Database(entities = [Quote::class, Author::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase(){
 
     companion object {
@@ -27,4 +28,6 @@ abstract class AppDatabase : RoomDatabase(){
     }
 
     abstract fun quoteDao(): QuoteDao
+
+    abstract fun authorDao(): AuthorDao
 }

@@ -9,6 +9,8 @@ import javax.inject.Inject
 
 class SyncManager @Inject constructor(private val settingsManager: SettingsManager, private val app: Application) {
 
+    private val workManager = WorkManager.getInstance(app)
+
     private fun getInterval(): Long
             = settingsManager.getInterval().interval.toLong()
 
@@ -23,7 +25,7 @@ class SyncManager @Inject constructor(private val settingsManager: SettingsManag
             .setConstraints(constraints)
             .build()
 
-        WorkManager.getInstance(app).enqueueUniquePeriodicWork(DownloadWorker.TAG,
+        workManager.enqueueUniquePeriodicWork(DownloadWorker.TAG,
             ExistingPeriodicWorkPolicy.KEEP, request)
         Log.d("WORK_MANAGER", "Repeat interval is: $interval hours")
     }
@@ -40,7 +42,7 @@ class SyncManager @Inject constructor(private val settingsManager: SettingsManag
                     .setConstraints(constraints)
                     .build()
 
-            WorkManager.getInstance(app).enqueueUniquePeriodicWork(
+            workManager.enqueueUniquePeriodicWork(
                 DownloadWorker.TAG,
                 ExistingPeriodicWorkPolicy.KEEP, request
             )

@@ -3,6 +3,7 @@ package com.example.quoteapp.di
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.work.WorkManager
 import com.example.quoteapp.App
 import com.example.quoteapp.SettingsManager
 import com.example.quoteapp.SyncManager
@@ -109,4 +110,5 @@ class AppModule {
     @Singleton
     fun provideSyncManager(settingsManager: SettingsManager, app: Application): SyncManager =
         SyncManager(settingsManager, app)
+
 }

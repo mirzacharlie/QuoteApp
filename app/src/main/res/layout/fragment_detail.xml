@@ -9,19 +9,20 @@
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_margin="12dp"
+        android:contentDescription="@string/author_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/btn_star_big_on" />
+        app:srcCompat="@drawable/author_placeholder" />
 
     <TextView
         android:id="@+id/tvAuthor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="TextView"
         android:textSize="24sp"
         android:textStyle="bold"
+        tools:text="Фрэнк Заппа"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivPhoto" />
@@ -32,10 +33,12 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:padding="6dp"
-        android:text="TextView"
         android:textSize="20sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAuthor" />
+        app:layout_constraintTop_toBottomOf="@+id/tvAuthor"
+        tools:text="Если ты всегда слушал папу с мамой, школьных учителей,
+             священников и какого-то дядьку в телевизоре, а теперь из-за этого ведешь скучную
+              и несчастную жизнь, то, парень, ты этого заслуживаешь."/>
 </androidx.constraintlayout.widget.ConstraintLayout>

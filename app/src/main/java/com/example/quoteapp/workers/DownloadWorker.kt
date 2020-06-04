@@ -15,15 +15,16 @@ class DownloadWorker constructor(
 ) : Worker(context, params) {
 
     companion object{
-        final val TAG = "Quote download worker"
+        const val TAG = "Download Worker"
     }
+
 
     override fun doWork(): Result {
         return try {
             repository.loadNewQuotes()
             Result.success()
         } catch (e: Exception) {
-            Log.d("DOWNLOAD WORKER", "Exception: ${e.message}")
+            Log.d(TAG, "Exception: ${e.message}")
             Result.retry()
         }
     }

@@ -72,33 +72,27 @@ class QuoteRepository(
 
     //  Загружает и добавляет в БД 10 цитат
     fun loadNewQuotes() {
-        launch(Dispatchers.IO) {
+        runBlocking(Dispatchers.IO) {
             val quoteList: MutableList<Quote> = mutableListOf()
             val authorList: MutableList<Author> = mutableListOf()
             val startKey = getLastQuoteId() + 1
 
             while (quoteList.size < 10) {
                 val quote = withContext(Dispatchers.IO) {
-//                    Log.d("LoadNewQuotes()", "forismaticApiService.getQuote()")
                     forismaticApiService.getQuote(key = (startKey + quoteList.size).toString())
                 }
                 if (validate(quote)) {
-                        var author: Author? = withContext(Dispatchers.IO) {
-//                            Log.d("LoadNewQuotes()", "authorDao.getAuthor")
+                        val author: Author? = withContext(Dispatchers.IO) {
                             authorDao.getAuthor(quote.quoteAuthor)
                         }
                         if (author == null) {
-//                            Log.d("LoadNewQuotes()", "createAuthor()")
-                                author = createAuthor(quote.quoteAuthor)
+                            authorList.add(createAuthor(quote.quoteAuthor))
                         }
                     quoteList.add(quote)
-                    authorList.add(author)
                 }
-//                Log.d("LoadNewQuotes()", "quoteList: ${quoteList.size}, authorList: ${authorList.size}")
             }
             insertQuoteList(quoteList)
             insertAuthorList(authorList)
-//            Log.d("LoadNewQuotes()", "Finished")
         }
     }
 

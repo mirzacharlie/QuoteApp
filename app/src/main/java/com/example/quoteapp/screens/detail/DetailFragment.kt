@@ -23,7 +23,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail) {
     @ViewModelInjection
     lateinit var viewModel: DetailVM
 
-    val args: DetailFragmentArgs by navArgs()
+    private val args: DetailFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,7 +33,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail) {
         viewModel.quoteWithAuthor.observe(viewLifecycleOwner, Observer {
             tvQuote.text = it.quoteText
             tvAuthor.text = it.quoteAuthor
-            ivPhoto.load(it.imgUri)
+            ivPhoto.load(it.imgUri){ placeholder(R.drawable.author_placeholder)}
         })
     }
 }

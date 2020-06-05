@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.work.WorkManager
 import com.example.quoteapp.App
+import com.example.quoteapp.QuoteNotificationManager
 import com.example.quoteapp.SettingsManager
 import com.example.quoteapp.SyncManager
 import com.example.quoteapp.api.ForismaticApiService
@@ -93,8 +94,8 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideAppDatabase(app: Application): AppDatabase
-            = AppDatabase.getInstance(app)
+    fun provideAppDatabase(app: Application): AppDatabase =
+        AppDatabase.getInstance(app)
 
     @Provides
     @Singleton
@@ -111,4 +112,8 @@ class AppModule {
     fun provideSyncManager(settingsManager: SettingsManager, app: Application): SyncManager =
         SyncManager(settingsManager, app)
 
+    @Provides
+    @Singleton
+    fun provideQuoteNotificationManager(app: Application): QuoteNotificationManager =
+        QuoteNotificationManager(app)
 }

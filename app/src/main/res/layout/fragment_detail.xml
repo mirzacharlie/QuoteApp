@@ -17,15 +17,15 @@
 
     <TextView
         android:id="@+id/tvAuthor"
+        style="@style/AuthorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        tools:text="Фрэнк Заппа"
+        android:layout_margin="10dp"
+        android:textSize="26sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivPhoto" />
+        app:layout_constraintTop_toBottomOf="@+id/ivPhoto"
+        tools:text="Фрэнк Заппа" />
 
     <TextView
         android:id="@+id/tvQuote"
@@ -34,8 +34,8 @@
         android:layout_margin="8dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:textSize="20sp"
-        android:textStyle="italic"
+        android:textSize="22sp"
+        style="@style/QuoteText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvAuthor"

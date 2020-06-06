@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import androidx.fragment.app.Fragment
+import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import com.example.quoteapp.BaseFragment
 import com.example.quoteapp.R
@@ -14,11 +14,9 @@ import com.example.quoteapp.di.ViewModelInjection
 import kotlinx.android.synthetic.main.fragment_settings.*
 import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-
 
 class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
     // TODO: Rename and change types of parameters
@@ -51,6 +49,15 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val adapter = context?.let {
+            ArrayAdapter.createFromResource(
+                it,
+                R.array.download_time, R.layout.custom_spinner_item
+            )
+        }
+        adapter?.setDropDownViewResource(R.layout.custom_drop_down_spinner_item)
+        spinner.adapter = adapter
+
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
@@ -69,15 +76,6 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SettingsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             SettingsFragment().apply {

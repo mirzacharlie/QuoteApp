@@ -15,11 +15,11 @@
 
         <TextView
             android:id="@+id/tvQuote"
+            style="@style/QuoteText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="4dp"
             android:textSize="20sp"
-            android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -29,11 +29,11 @@
 
         <TextView
             android:id="@+id/tvAuthor"
+            style="@style/AuthorText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:textSize="24sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvQuote"
             tools:text="Фрэнк Заппа" />

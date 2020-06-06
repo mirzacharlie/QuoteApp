@@ -16,7 +16,7 @@
         />
     <item
         android:id = "@+id/settingsFragment"
-        android:title = "@string/settings"
+        android:title = "@string/settings_label"
         android:icon="@drawable/ic_settings_white_24dp"
         android:orderInCategory = "100"
         />

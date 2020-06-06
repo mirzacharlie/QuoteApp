@@ -15,7 +15,7 @@
             android:id="@+id/rvQuotes"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#180445"
+            android:background="@color/colorMainBackground"
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

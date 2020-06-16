@@ -2,6 +2,7 @@ package com.example.quoteapp.screens.detail
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import coil.api.load
@@ -23,17 +24,37 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail) {
     @ViewModelInjection
     lateinit var viewModel: DetailVM
 
+    var isFavourite = 0
+    var id = 0L
+
     private val args: DetailFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.setQuoteWithAuthor(args.id)
+        viewModel.initQuoteWithAuthor(args.id)
+
+        ivFav.setOnClickListener(View.OnClickListener {
+            viewModel.changeFavourite(id, isFavourite)
+            viewModel.initQuoteWithAuthor(id)
+            if (isFavourite == 0) {
+                Toast.makeText(activity, "Цитата добавлена в избранное", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(activity, "Цитата удалена из избранного", Toast.LENGTH_SHORT).show()
+            }
+        })
 
         viewModel.quoteWithAuthor.observe(viewLifecycleOwner, Observer {
             tvQuote.text = it.quoteText
             tvAuthor.text = it.quoteAuthor
-            ivPhoto.load(it.imgUri){ placeholder(R.drawable.author_placeholder)}
+            isFavourite = it.isFavourite
+            if(it.quoteId != null) id = it.quoteId
+            ivPhoto.load(it.imgUri) { placeholder(R.drawable.author_placeholder) }
+            if (isFavourite == 0) {
+                ivFav.setImageResource(R.drawable.ic_favorite_border_red_24dp)
+            } else {
+                ivFav.setImageResource(R.drawable.ic_favorite_red_24dp)
+            }
         })
     }
 }

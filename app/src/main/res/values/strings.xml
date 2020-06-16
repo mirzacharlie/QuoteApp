@@ -7,6 +7,7 @@
     <string name="channel_name">main channel</string>
     <string name="channel_description">основной канал уведомлений</string>
     <string name="download_new_quotes_label">Загружать цитаты раз в:</string>
+    <string name="favourite_button">Кнопка избранное</string>
 
     <string-array name="download_time">
         <item>1 час</item>

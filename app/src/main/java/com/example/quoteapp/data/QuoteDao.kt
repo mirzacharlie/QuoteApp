@@ -1,6 +1,7 @@
 package com.example.quoteapp.data
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.room.*
 import com.example.quoteapp.pojo.Quote
 import com.example.quoteapp.pojo.QuoteWithAuthor
@@ -25,6 +26,9 @@ interface QuoteDao {
 
     @Update
     fun updateQuote(quote: Quote)
+
+    @Query("UPDATE quotes SET isFavourite = :isFav WHERE quoteId = :id")
+    fun updateFavourite(id: Long, isFav: Int): Int
 
     @Query("SELECT quotes.quoteId, quotes.quoteAuthor, quotes.quoteText, quotes.isFavourite, authors.imgUri " +
         "FROM quotes " +

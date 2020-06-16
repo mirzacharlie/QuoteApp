@@ -1,45 +1,64 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/ivPhoto"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_margin="12dp"
-        android:contentDescription="@string/author_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/author_placeholder" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tvAuthor"
-        style="@style/AuthorText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:textSize="26sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivPhoto"
-        tools:text="Фрэнк Заппа" />
+        <ImageView
+            android:id="@+id/ivPhoto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/author_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/author_placeholder" />
 
-    <TextView
-        android:id="@+id/tvQuote"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:textSize="22sp"
-        style="@style/QuoteText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAuthor"
-        tools:text="Если ты всегда слушал папу с мамой, школьных учителей,
+        <TextView
+            android:id="@+id/tvAuthor"
+            style="@style/AuthorText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginRight="6dp"
+            android:textSize="26sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivPhoto"
+            tools:text="Фрэнк Заппа" />
+
+        <TextView
+            android:id="@+id/tvQuote"
+            style="@style/QuoteText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvAuthor"
+            tools:text="Если ты всегда слушал папу с мамой, школьных учителей,
              священников и какого-то дядьку в телевизоре, а теперь из-за этого ведешь скучную
               и несчастную жизнь, то, парень, ты этого заслуживаешь." />
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/ivFav"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
+            android:contentDescription="@string/favourite_button"
+            app:layout_constraintBottom_toBottomOf="@+id/ivPhoto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_favorite_red_24dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

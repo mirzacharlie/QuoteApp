@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.quoteapp.api.ForismaticApiService
 import com.example.quoteapp.api.ImgDownloadService
@@ -40,31 +41,24 @@ class QuoteRepository(
 
     fun getFavouriteQuotes() = quoteDao.getFavouriteQuotes()
 
-    var author = MutableLiveData<Author>()
-
     var quoteWithAuthor = MutableLiveData<QuoteWithAuthor>()
 
-    fun initializeAuthor(name: String){
-        launch {
-            author.value = getAuthorFromDb(name)
-        }
-    }
 
-    fun initQuoteWithAuthor(id: Long){
+    fun initQuoteWithAuthor(id: Long) {
         launch {
             quoteWithAuthor.value = getQuoteWithAuthorFromDb(id)
         }
     }
 
-    private suspend fun getQuoteWithAuthorFromDb(id: Long): QuoteWithAuthor{
-        return withContext(Dispatchers.IO){
+    private suspend fun getQuoteWithAuthorFromDb(id: Long): QuoteWithAuthor {
+        return withContext(Dispatchers.IO) {
             val quoteWithAuthor = quoteDao.getQuoteWithAuthor(id)
             quoteWithAuthor
         }
     }
 
     private suspend fun getAuthorFromDb(name: String): Author? {
-        return withContext(Dispatchers.IO){
+        return withContext(Dispatchers.IO) {
             val author = authorDao.getAuthor(name)
             author
         }
@@ -82,12 +76,12 @@ class QuoteRepository(
                     forismaticApiService.getQuote(key = (startKey + quoteList.size).toString())
                 }
                 if (validate(quote)) {
-                        val author: Author? = withContext(Dispatchers.IO) {
-                            authorDao.getAuthor(quote.quoteAuthor)
-                        }
-                        if (author == null) {
-                            authorList.add(createAuthor(quote.quoteAuthor))
-                        }
+                    val author: Author? = withContext(Dispatchers.IO) {
+                        authorDao.getAuthor(quote.quoteAuthor)
+                    }
+                    if (author == null) {
+                        authorList.add(createAuthor(quote.quoteAuthor))
+                    }
                     quoteList.add(quote)
                 }
             }
@@ -110,14 +104,11 @@ class QuoteRepository(
         }
     }
 
-    //  выкачиваю цитату и отправляю на валидацию
-    private fun loadNewQuote(key: String) {
+    fun updateFavouriteByID(id: Long, isFav: Int) {
         launch {
-            val quoteTMP = async { forismaticApiService.getQuote(key = key) }
-            val quote = quoteTMP.await()
+            updateQuoteFavourite(id, isFav)
         }
     }
-
 
     //  Возвращает Id последней записи или 0 при пустоой таблице
     private suspend fun getLastQuoteId(): Long {
@@ -129,7 +120,6 @@ class QuoteRepository(
         }
     }
 
-
     private suspend fun insertQuoteList(quotes: List<Quote>) {
         withContext(Dispatchers.IO) {
             quoteDao.addQuoteList(quotes)
@@ -139,6 +129,12 @@ class QuoteRepository(
     private suspend fun updateQuote(quote: Quote) {
         withContext(Dispatchers.IO) {
             quoteDao.updateQuote(quote)
+        }
+    }
+
+    private suspend fun updateQuoteFavourite(id: Long, isFav: Int) {
+        withContext(Dispatchers.IO) {
+            quoteDao.updateFavourite(id, isFav)
         }
     }
 
@@ -156,8 +152,8 @@ class QuoteRepository(
         return Author(name, imgUri.await())
     }
 
-    private suspend fun insertAuthorList(authors: List<Author>){
-        withContext(Dispatchers.IO){
+    private suspend fun insertAuthorList(authors: List<Author>) {
+        withContext(Dispatchers.IO) {
             authorDao.addAuthorList(authors)
         }
     }

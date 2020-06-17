@@ -6,10 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.example.quoteapp.BaseFragment
 import com.example.quoteapp.R
 import com.example.quoteapp.adapters.QuoteAdapter
 import com.example.quoteapp.di.ViewModelInjection
+import com.example.quoteapp.screens.quotelist.QuoteListFragmentDirections
 import kotlinx.android.synthetic.main.fragment_favourite.*
 import javax.inject.Inject
 
@@ -40,7 +44,6 @@ class FavouriteFragment : BaseFragment(R.layout.fragment_favourite) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_favourite, container, false)
     }
 
@@ -49,11 +52,44 @@ class FavouriteFragment : BaseFragment(R.layout.fragment_favourite) {
 
         adapter = QuoteAdapter()
         rvQuotes.adapter = adapter
-        adapter.onQuoteClickListener = object : QuoteAdapter.OnQuoteClickListener{
+        adapter.onQuoteClickListener = object : QuoteAdapter.OnQuoteClickListener {
             override fun onQuoteClick(position: Int) {
-                viewModel.removeFromFavourite(adapter.quoteList[position])
+
+                val action = adapter.quoteList[position].quoteId?.let {
+                    FavouriteFragmentDirections
+                        .actionFavouriteFragmentToDetailFragment(it)
+                }
+                if (action != null) {
+                    findNavController().navigate(action)
+                }
             }
         }
+
+        adapter.onQuoteLongClickListener = object : QuoteAdapter.OnQuoteLongClickListener {
+            override fun onQuoteLongClick(position: Int): Boolean {
+                viewModel.removeFromFavourite(adapter.quoteList[position])
+                return true
+            }
+        }
+
+        val itemTouchHelper =
+            ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return false
+                }
+
+                override fun onSwiped(
+                    viewHolder: RecyclerView.ViewHolder,
+                    direction: Int
+                ) {
+                    viewModel.deleteQuote(adapter.quoteList[viewHolder.adapterPosition])
+                }
+            })
+        itemTouchHelper.attachToRecyclerView(rvQuotes)
 
         viewModel.favouriteQuoteList.observe(viewLifecycleOwner, Observer {
             adapter.quoteList = it

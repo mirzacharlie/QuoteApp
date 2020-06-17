@@ -1,7 +1,6 @@
 package com.example.quoteapp.screens.quotelist
 
 import android.app.Application
-import android.content.Context
 import androidx.work.WorkManager
 import com.example.quoteapp.BaseViewModel
 import com.example.quoteapp.QuoteRepository
@@ -22,6 +21,10 @@ class QuoteListVM @Inject constructor(private val repository: QuoteRepository, v
 
     fun addToFavourite(quote: Quote){
         repository.addToFavourite(quote)
+    }
+
+    fun deleteQuote(quote: Quote){
+        repository.deleteQuote(quote)
     }
 
 }

@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkInfo
 import com.example.quoteapp.BaseFragment
 import com.example.quoteapp.R
@@ -75,6 +77,26 @@ class QuoteListFragment : BaseFragment(R.layout.fragment_quote_list) {
                 return true
             }
         }
+
+        val itemTouchHelper =
+            ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return false
+                }
+
+                override fun onSwiped(
+                    viewHolder: RecyclerView.ViewHolder,
+                    direction: Int
+                ) {
+                    viewModel.deleteQuote(adapter.quoteList[viewHolder.adapterPosition])
+                }
+
+            })
+        itemTouchHelper.attachToRecyclerView(rvQuotes)
 
         viewModel.quoteList.observe(viewLifecycleOwner, Observer {
             adapter.quoteList = it

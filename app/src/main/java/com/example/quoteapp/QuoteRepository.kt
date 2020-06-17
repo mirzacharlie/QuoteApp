@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
-import androidx.lifecycle.LiveData
+import androidx.core.net.toUri
 import androidx.lifecycle.MutableLiveData
 import com.example.quoteapp.api.ForismaticApiService
 import com.example.quoteapp.api.ImgDownloadService
@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
 import kotlin.coroutines.CoroutineContext
+
 
 class QuoteRepository(
     private val forismaticApiService: ForismaticApiService,
@@ -54,13 +55,6 @@ class QuoteRepository(
         return withContext(Dispatchers.IO) {
             val quoteWithAuthor = quoteDao.getQuoteWithAuthor(id)
             quoteWithAuthor
-        }
-    }
-
-    private suspend fun getAuthorFromDb(name: String): Author? {
-        return withContext(Dispatchers.IO) {
-            val author = authorDao.getAuthor(name)
-            author
         }
     }
 
@@ -117,6 +111,40 @@ class QuoteRepository(
             quote.quoteId
         } else {
             0L
+        }
+    }
+
+    // Удаляет автора из базы, если удаляемая цитата его последняя
+    fun deleteQuote(quote: Quote) {
+        launch(Dispatchers.IO) {
+            quoteDao.deleteQuote(quote)
+            if (quoteDao.getAuthorsQuoteCount(quote.quoteAuthor) == 0L) {
+                val author = withContext(Dispatchers.IO) {
+                    authorDao.getAuthor(quote.quoteAuthor)
+                }
+                val uri = author?.imgUri?.toUri()
+                val file = File(uri?.getPath())
+                file.delete()
+                if (file.exists()) {
+                    file.canonicalFile.delete()
+                    if (file.exists()) {
+                        context.deleteFile(file.name)
+                    }
+                }
+                deleteAuthorFromDb(quote.quoteAuthor)
+            }
+        }
+    }
+
+    private fun deleteAuthorFromDb(authorName: String) {
+        launch(Dispatchers.IO) {
+            authorDao.deleteAuthorByName(authorName)
+        }
+    }
+
+    private suspend fun deleteQuoteFromDb(quote: Quote) {
+        withContext(Dispatchers.IO) {
+            quoteDao.deleteQuote(quote)
         }
     }
 

@@ -35,4 +35,10 @@ interface QuoteDao {
         "INNER JOIN authors ON authors.authorName = quotes.quoteAuthor " +
         "WHERE quotes.quoteId = :id")
     fun getQuoteWithAuthor(id: Long): QuoteWithAuthor
+
+    @Query("SELECT COUNT(*) FROM quotes WHERE quoteAuthor = :author")
+    fun getAuthorsQuoteCount(author: String): Long
+
+    @Delete
+    fun deleteQuote(quote: Quote)
 }

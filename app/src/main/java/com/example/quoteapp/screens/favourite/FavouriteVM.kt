@@ -13,4 +13,8 @@ class FavouriteVM @Inject constructor(private val repository: QuoteRepository) :
         repository.removeFromFavourite(quote)
     }
 
+    fun deleteQuote(quote: Quote){
+        repository.deleteQuote(quote)
+    }
+
 }

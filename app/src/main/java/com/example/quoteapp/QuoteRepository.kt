@@ -14,6 +14,7 @@ import com.example.quoteapp.data.QuoteDao
 import com.example.quoteapp.pojo.Author
 import com.example.quoteapp.pojo.Quote
 import com.example.quoteapp.pojo.QuoteWithAuthor
+import com.example.quoteapp.utils.PLACEHOLDER_URI
 import kotlinx.coroutines.*
 import okhttp3.ResponseBody
 import java.io.File
@@ -81,6 +82,26 @@ class QuoteRepository(
             }
             insertQuoteList(quoteList)
             insertAuthorList(authorList)
+        }
+    }
+
+    fun resyncAuthors(){
+        launch(Dispatchers.IO) {
+            val authorList =
+                withContext(Dispatchers.Default) { authorDao.getAuthorsWithoutPhoto() }
+            for (author in authorList){
+                val url = getImgUrl(author.authorName)
+                if (url == "ERROR"){
+                    return@launch
+                }
+                val imgUri = coroutineScope {
+                    async {
+                        downloadImg(url)
+                    }
+                }
+                authorDao.updateAuthorImgUri(author.authorName, imgUri.await(), 1)
+                Log.d("resyncAuthor", "${author.authorName} imgUri updated")
+            }
         }
     }
 
@@ -171,20 +192,41 @@ class QuoteRepository(
         return quote.quoteText.isNotEmpty() && quote.quoteAuthor.isNotEmpty()
     }
 
-    private suspend fun createAuthor(name: String): Author {
-        val imgUri = coroutineScope {
-            async {
-                downloadImg(getImgUrl(name))
-            }
-        }
-        return Author(name, imgUri.await())
-    }
-
     private suspend fun insertAuthorList(authors: List<Author>) {
         withContext(Dispatchers.IO) {
             authorDao.addAuthorList(authors)
         }
     }
+
+//    private suspend fun createAuthor(name: String): Author {
+//        val imgUri = coroutineScope {
+//            async {
+//                downloadImg(getImgUrl(name))
+//            }
+//        }
+//        return Author(name, imgUri.await())
+//    }
+
+    private suspend fun createAuthor(name: String): Author {
+        val url = getImgUrl(name)
+        if (url == "ERROR"){
+            return Author(name, Uri.parse(PLACEHOLDER_URI).toString(), 0)
+        }
+        val imgUri = coroutineScope {
+            async {
+                downloadImg(url)
+            }
+        }
+        return Author(name, imgUri.await(), 1)
+    }
+
+    // Вызывает метод сохранения изображения и возвращет uri в виде строки
+    private suspend fun downloadImg(url: String): String {
+        val response = imgDownloadService.downloadImg(url).body()
+        val imgUrl = coroutineScope { async { saveFile(response) } }
+        return imgUrl.await()
+    }
+
 
     //Возвращает url первой картинки из результатов поиска
     private suspend fun getImgUrl(name: String): String {
@@ -197,12 +239,18 @@ class QuoteRepository(
             matcher = pattern.matcher(temp)
             if (matcher.find()) {
                 val imgUrl = matcher.group(1)
-                val decodedUrl = URLDecoder.decode(imgUrl, "UTF-8")
-                Log.d("RESULT", decodedUrl)
-                return decodedUrl
+                return if (imgUrl.startsWith("http", true)){
+                    val decodedUrl = URLDecoder.decode(imgUrl, "UTF-8")
+                    Log.d("IMG URL", decodedUrl)
+                    decodedUrl
+                } else {
+                    Log.d("IMG URL", "Не удалось распарсить URL")
+                    "ERROR"
+                }
             }
         }
-        return ""
+        Log.d("IMG URL", "Не удалось распарсить URL")
+        return "ERROR"
     }
 
     private suspend fun downloadSearchResult(name: String): String {
@@ -214,15 +262,13 @@ class QuoteRepository(
         return result.await()
     }
 
-    private suspend fun downloadImg(url: String): String {
-        val response = imgDownloadService.downloadImg(url).body()
-        val imgUrl = coroutineScope { async { saveFile(response) } }
-        return imgUrl.await()
-    }
 
+    // Создаёт файл во внешнем хронилище и записывает в него скачанный ответ
     private fun saveFile(body: ResponseBody?): String {
+        val placeholderUri = Uri.parse(PLACEHOLDER_URI).toString()
+
         if (body == null)
-            return ""
+            return placeholderUri
         var input: InputStream? = null
         try {
             input = body.byteStream()
@@ -230,7 +276,7 @@ class QuoteRepository(
             val timeStamp: String = SimpleDateFormat("yyyyMMddHHmmss").format(Date())
             val fileName = "PHOTO_" + timeStamp + "_"
             val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-            val file = File.createTempFile(fileName, ".tmp", storageDir)
+            val file = File.createTempFile(fileName, ".img", storageDir)
 
             val fos = FileOutputStream(file)
             fos.use { output ->
@@ -247,7 +293,8 @@ class QuoteRepository(
         } finally {
             input?.close()
         }
-        return ""
+        return placeholderUri
     }
+
 }
 

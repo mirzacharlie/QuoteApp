@@ -5,5 +5,5 @@ data class QuoteWithAuthor(
     val quoteText: String = "",
     val quoteAuthor: String = "",
     var isFavourite: Int = 0,
-    var imgUri: String
+    var imgUri: String?
 )

@@ -198,19 +198,11 @@ class QuoteRepository(
         }
     }
 
-//    private suspend fun createAuthor(name: String): Author {
-//        val imgUri = coroutineScope {
-//            async {
-//                downloadImg(getImgUrl(name))
-//            }
-//        }
-//        return Author(name, imgUri.await())
-//    }
 
     private suspend fun createAuthor(name: String): Author {
         val url = getImgUrl(name)
         if (url == "ERROR"){
-            return Author(name, Uri.parse(PLACEHOLDER_URI).toString(), 0)
+            return Author(name, null, 0)
         }
         val imgUri = coroutineScope {
             async {

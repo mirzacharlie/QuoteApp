@@ -22,6 +22,7 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import java.net.URLDecoder
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.*
 import java.util.regex.Pattern
 import kotlin.coroutines.CoroutineContext
@@ -77,6 +78,7 @@ class QuoteRepository(
                     if (author == null) {
                         authorList.add(createAuthor(quote.quoteAuthor))
                     }
+                    quote.date = Date()
                     quoteList.add(quote)
                 }
             }

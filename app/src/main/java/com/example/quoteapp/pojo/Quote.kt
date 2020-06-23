@@ -2,6 +2,7 @@ package com.example.quoteapp.pojo
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.Date
 
 @Entity(tableName = "quotes")
 data class Quote(
@@ -9,5 +10,6 @@ data class Quote(
     val quoteId: Long? = null,
     val quoteText: String = "",
     val quoteAuthor: String = "",
-    var isFavourite: Int = 0
+    var isFavourite: Int = 0,
+    var date: Date
 )

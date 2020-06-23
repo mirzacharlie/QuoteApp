@@ -9,7 +9,7 @@ import com.example.quoteapp.pojo.QuoteWithAuthor
 @Dao
 interface QuoteDao {
 
-    @Query("SELECT * FROM quotes ")
+    @Query("SELECT * FROM quotes ORDER BY date DESC")
     fun getAllQuotes(): LiveData<List<Quote>>
 
     @Query("SELECT * FROM quotes WHERE isFavourite = 1")

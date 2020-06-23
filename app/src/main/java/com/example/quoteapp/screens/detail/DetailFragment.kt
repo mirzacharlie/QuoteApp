@@ -1,8 +1,10 @@
 package com.example.quoteapp.screens.detail
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import coil.api.load
@@ -11,6 +13,7 @@ import com.example.quoteapp.R
 import com.example.quoteapp.di.ViewModelInjection
 import com.example.quoteapp.BaseFragment
 import kotlinx.android.synthetic.main.fragment_detail.*
+import java.util.Objects.isNull
 
 class DetailFragment : BaseFragment(R.layout.fragment_detail) {
 
@@ -29,6 +32,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail) {
 
     private val args: DetailFragmentArgs by navArgs()
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -49,7 +53,10 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail) {
             tvAuthor.text = it.quoteAuthor
             isFavourite = it.isFavourite
             if(it.quoteId != null) id = it.quoteId
-            ivPhoto.load(it.imgUri) { placeholder(R.drawable.author_placeholder) }
+            ivPhoto.load(it.imgUri) {
+                placeholder(R.drawable.author_placeholder)
+                fallback(R.drawable.author_placeholder)
+            }
             if (isFavourite == 0) {
                 ivFav.setImageResource(R.drawable.ic_favorite_border_red_24dp)
             } else {

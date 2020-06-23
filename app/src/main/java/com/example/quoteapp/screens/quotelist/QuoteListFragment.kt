@@ -33,6 +33,9 @@ class QuoteListFragment : BaseFragment(R.layout.fragment_quote_list) {
     @ViewModelInjection
     lateinit var viewModel: QuoteListVM
 
+    @Inject
+    lateinit var syncManager: SyncManager
+
     lateinit var adapter: QuoteAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +57,7 @@ class QuoteListFragment : BaseFragment(R.layout.fragment_quote_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fabLoad.setOnClickListener { viewModel.loadNewQuotes() }
+        fabLoad.setOnClickListener { syncManager.oneTimeSync() }
 
         adapter = QuoteAdapter()
         rvQuotes.adapter = adapter

@@ -30,6 +30,18 @@ class SyncManager @Inject constructor(private val settingsManager: SettingsManag
         Log.d("WORK_MANAGER", "Repeat interval is: $interval hours")
     }
 
+    fun oneTimeSync(){
+        val constraints: Constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val request = OneTimeWorkRequestBuilder<DownloadWorker>()
+            .setConstraints(constraints)
+            .build()
+
+        workManager.enqueue(request)
+    }
+
     fun updateSyncInterval() {
         val interval = getInterval()
 

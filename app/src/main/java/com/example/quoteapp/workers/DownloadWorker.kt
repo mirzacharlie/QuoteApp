@@ -23,6 +23,7 @@ class DownloadWorker constructor(
     override fun doWork(): Result {
         return try {
             repository.loadNewQuotes()
+            repository.resyncAuthors()
             quoteNotificationManager.showNotification()
             Result.success()
         } catch (e: Exception) {

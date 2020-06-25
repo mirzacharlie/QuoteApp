@@ -61,24 +61,7 @@ class QuoteListFragment : BaseFragment(R.layout.fragment_quote_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fabLoad.setOnClickListener {
-
-//            syncManager.oneTimeSync()
-
-            val workManager = activity?.let { it1 -> WorkManager.getInstance(it1) }
-
-            workManager?.enqueue(OneTimeWorkRequest.from(NotificationWorker::class.java))
-
-//            val constraints: Constraints = Constraints.Builder()
-//                .setRequiredNetworkType(NetworkType.CONNECTED)
-//                .build()
-//
-//            val request = OneTimeWorkRequestBuilder<NotificationWorker>()
-//                .setConstraints(constraints)
-//                .build()
-//
-//            workManager?.enqueue(request)
-        }
+        fabLoad.setOnClickListener { syncManager.oneTimeSync() }
 
         adapter = QuoteAdapter()
         rvQuotes.adapter = adapter

@@ -1,6 +1,8 @@
 package com.example.quoteapp
 
 import android.os.Bundle
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -30,5 +32,15 @@ class MainActivity : BaseActivity() {
     private fun setUpBottomNav(navController: NavController) {
         val bottomNav = findViewById<BottomNavigationView>(R.id.navBar)
         bottomNav?.setupWithNavController(navController)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        syncManager.isAppInForeground = true
+    }
+
+    override fun onStop() {
+        super.onStop()
+        syncManager.isAppInForeground = false
     }
 }

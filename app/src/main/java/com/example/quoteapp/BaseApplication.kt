@@ -20,10 +20,8 @@ open class BaseApplication : Application(), HasAndroidInjector {
 
     override fun onCreate() {
         super.onCreate()
-
         WorkManager.initialize(this, Configuration.Builder().setWorkerFactory(workerFactory).build())
     }
 
     override fun androidInjector(): AndroidInjector<Any> = androidInjector
-
 }

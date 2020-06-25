@@ -14,6 +14,8 @@ class SyncManager @Inject constructor(
     private val app: Application
 ) {
 
+    var isAppInForeground = false
+
     private val workManager = WorkManager.getInstance(app)
 
     private fun getInterval(): Long = settingsManager.getInterval().interval.toLong()

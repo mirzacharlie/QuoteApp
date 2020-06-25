@@ -5,6 +5,7 @@ import androidx.work.ListenableWorker
 import com.example.quoteapp.App
 import com.example.quoteapp.workers.ChildWorkerFactory
 import com.example.quoteapp.workers.DownloadWorker
+import com.example.quoteapp.workers.NotificationWorker
 import dagger.*
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
@@ -47,5 +48,10 @@ interface AppComponent : AndroidInjector<App> {
         @IntoMap
         @WorkerKey(DownloadWorker::class)
         fun bindDownloadWorker(factory: DownloadWorker.Factory): ChildWorkerFactory
+
+        @Binds
+        @IntoMap
+        @WorkerKey(NotificationWorker::class)
+        fun bindNotificationWorker(factory: NotificationWorker.Factory): ChildWorkerFactory
     }
 }

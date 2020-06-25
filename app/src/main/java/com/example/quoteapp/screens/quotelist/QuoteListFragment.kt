@@ -1,6 +1,7 @@
 package com.example.quoteapp.screens.quotelist
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,14 +12,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.work.WorkInfo
+import androidx.work.*
 import com.example.quoteapp.BaseFragment
 import com.example.quoteapp.R
 import com.example.quoteapp.SyncManager
 import com.example.quoteapp.adapters.QuoteAdapter
 import com.example.quoteapp.di.ViewModelInjection
 import com.example.quoteapp.screens.detail.DetailFragment
+import com.example.quoteapp.workers.DownloadWorker
+import com.example.quoteapp.workers.NotificationWorker
 import kotlinx.android.synthetic.main.fragment_quote_list.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 private const val ARG_PARAM1 = "param1"
@@ -57,7 +61,24 @@ class QuoteListFragment : BaseFragment(R.layout.fragment_quote_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fabLoad.setOnClickListener { syncManager.oneTimeSync() }
+        fabLoad.setOnClickListener {
+
+//            syncManager.oneTimeSync()
+
+            val workManager = activity?.let { it1 -> WorkManager.getInstance(it1) }
+
+            workManager?.enqueue(OneTimeWorkRequest.from(NotificationWorker::class.java))
+
+//            val constraints: Constraints = Constraints.Builder()
+//                .setRequiredNetworkType(NetworkType.CONNECTED)
+//                .build()
+//
+//            val request = OneTimeWorkRequestBuilder<NotificationWorker>()
+//                .setConstraints(constraints)
+//                .build()
+//
+//            workManager?.enqueue(request)
+        }
 
         adapter = QuoteAdapter()
         rvQuotes.adapter = adapter

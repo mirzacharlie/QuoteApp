@@ -9,23 +9,20 @@ import com.example.quoteapp.QuoteNotificationManager
 import com.example.quoteapp.QuoteRepository
 import javax.inject.Inject
 
-class DownloadWorker constructor(
+class NotificationWorker constructor(
     context: Context,
     params: WorkerParameters,
-    private val repository: QuoteRepository,
     private val quoteNotificationManager: QuoteNotificationManager
 ) : Worker(context, params) {
 
     companion object{
-        const val TAG = "Download Worker"
+        const val TAG = "Notification Worker"
     }
 
     override fun doWork(): Result {
         Log.d(TAG, "doWork()")
         return try {
-            repository.loadNewQuotes()
-            repository.resyncAuthors()
-            quoteNotificationManager.showNewQuotesNotification()
+            quoteNotificationManager.showQuoteOfTheDayNotification()
             Result.success()
         } catch (e: Exception) {
             Log.d(TAG, "Exception: ${e.message}")
@@ -34,13 +31,11 @@ class DownloadWorker constructor(
     }
 
     class Factory @Inject constructor(
-        private val repository: QuoteRepository,
         private val quoteNotificationManager: QuoteNotificationManager
     ) : ChildWorkerFactory {
 
         override fun create(appContext: Context, params: WorkerParameters): ListenableWorker {
-            return DownloadWorker(appContext, params, repository, quoteNotificationManager)
+            return NotificationWorker(appContext, params, quoteNotificationManager)
         }
     }
 }
-

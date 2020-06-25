@@ -1,4 +1,4 @@
-package com.example.quoteapp.pojo
+package com.example.quoteapp.data
 
 import androidx.room.TypeConverter
 import java.util.*

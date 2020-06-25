@@ -14,6 +14,8 @@ class SettingsVM @Inject constructor(
 
     var currentSpinnerPositionByInterval = MutableLiveData(getCurrentSpinnerPosition())
 
+    var currentQuoteOfTheDaySwitchPosition = MutableLiveData(getIsQuoteOfTheDayActive())
+
     fun setIntervalByPosition(spinnerPosition: Int) {
         if(spinnerPosition != getCurrentSpinnerPosition()){
             settingsManager.setInterval(RepeatInterval.byPosition(spinnerPosition))
@@ -23,5 +25,19 @@ class SettingsVM @Inject constructor(
 
     private fun getCurrentSpinnerPosition(): Int =
         settingsManager.getInterval().ordinal
+
+    fun setQuoteOfTheDayActive(isActive: Boolean){
+        if (isActive != getIsQuoteOfTheDayActive()){
+            settingsManager.setQuoteOfTheDay(isActive)
+            if (isActive){
+                syncManager.startQuoteOfTheDayNotification()
+            } else{
+                syncManager.cancelQuoteOfTheDayNotification()
+            }
+        }
+    }
+
+    private fun getIsQuoteOfTheDayActive(): Boolean =
+        settingsManager.getIsQuoteOfTheDayActive()
 }
 

@@ -66,13 +66,17 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
             }
         }
 
+        switchQuoteOfTheDay.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.setQuoteOfTheDayActive(isChecked)
+        }
+
         viewModel.currentSpinnerPositionByInterval.observe(viewLifecycleOwner, Observer {
             spinner.setSelection(it)
         })
-    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+        viewModel.currentQuoteOfTheDaySwitchPosition.observe(viewLifecycleOwner, Observer {
+            switchQuoteOfTheDay.isChecked = it
+        })
     }
 
     companion object {

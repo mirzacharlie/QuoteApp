@@ -26,6 +26,7 @@ import java.time.LocalDateTime
 import java.util.*
 import java.util.regex.Pattern
 import kotlin.coroutines.CoroutineContext
+import kotlin.random.Random
 
 
 class QuoteRepository(
@@ -57,6 +58,12 @@ class QuoteRepository(
         return withContext(Dispatchers.IO) {
             val quoteWithAuthor = quoteDao.getQuoteWithAuthor(id)
             quoteWithAuthor
+        }
+    }
+
+    fun getRandomQuote(): Quote{
+        return runBlocking(Dispatchers.IO) {
+            quoteDao.getQuoteById((0..quoteDao.getQuotesCount()).random())
         }
     }
 

@@ -4,10 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.work.WorkManager
-import com.example.quoteapp.App
-import com.example.quoteapp.QuoteNotificationManager
-import com.example.quoteapp.SettingsManager
-import com.example.quoteapp.SyncManager
+import com.example.quoteapp.*
 import com.example.quoteapp.api.ForismaticApiService
 import com.example.quoteapp.api.ForismaticApiService.Companion.FORISMATIC_BASE_URL
 import com.example.quoteapp.api.ImgDownloadService
@@ -114,6 +111,6 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideQuoteNotificationManager(app: Application): QuoteNotificationManager =
-        QuoteNotificationManager(app)
+    fun provideQuoteNotificationManager(app: Application, quoteRepository: QuoteRepository): QuoteNotificationManager =
+        QuoteNotificationManager(app, quoteRepository)
 }

@@ -1,18 +1,23 @@
 package com.example.quoteapp
 
-import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.navigation.NavDeepLinkBuilder
+import javax.inject.Inject
 
-class QuoteNotificationManager (private val context: Context) {
+class QuoteNotificationManager @Inject constructor(
+    private val context: Context,
+    private val repository: QuoteRepository
+) {
 
-    companion object{
+    companion object {
         private const val MAIN_CHANNEL_ID = "main channel"
     }
 
@@ -32,7 +37,7 @@ class QuoteNotificationManager (private val context: Context) {
         }
     }
 
-    fun showNotification(){
+    fun showNewQuotesNotification() {
 
         val notificationIntent = Intent(context, MainActivity::class.java)
         val contentIntent = PendingIntent.getActivity(
@@ -49,8 +54,41 @@ class QuoteNotificationManager (private val context: Context) {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(contentIntent)
 
+
         with(NotificationManagerCompat.from(context)) {
             notify(0, builder.build())
         }
     }
+
+    fun showQuoteOfTheDayNotification() {
+        val quote = repository.getRandomQuote()
+
+        if (quote.quoteId != null) {
+            val bundle = Bundle()
+            bundle.putLong("id", quote.quoteId)
+
+            val pendingIntent = NavDeepLinkBuilder(context)
+                .setGraph(R.navigation.navigation_main)
+                .setDestination(R.id.detailFragment)
+                .setArguments(bundle)
+                .createPendingIntent()
+
+            val builder = NotificationCompat.Builder(context, MAIN_CHANNEL_ID)
+                .setSmallIcon(R.drawable.notification_icon)
+                .setContentTitle("Цитата дня")
+                .setContentText(quote.quoteAuthor)
+                .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setStyle(
+                    NotificationCompat.BigTextStyle()
+                        .bigText(quote.quoteText)
+                )
+
+            with(NotificationManagerCompat.from(context)) {
+                notify(0, builder.build())
+            }
+        }
+    }
 }
+

@@ -6,7 +6,6 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.quoteapp.pojo.Author
-import com.example.quoteapp.pojo.Converters
 import com.example.quoteapp.pojo.Quote
 
 @Database(entities = [Quote::class, Author::class], version = 1, exportSchema = false)

@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:entries="@array/download_time"
+            app:layout_constraintBottom_toBottomOf="@+id/tvSynchronize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvSynchronize"
             app:layout_constraintTop_toTopOf="@+id/tvSynchronize" />
@@ -46,5 +47,27 @@
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvSettingsTitle" />
+
+        <TextView
+            android:id="@+id/tvQuoteOfTheDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/main_font"
+            android:text="Уведомлять о цитате дня"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvSynchronize" />
+
+        <Switch
+            android:id="@+id/switchQuoteOfTheDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            app:layout_constraintBottom_toBottomOf="@+id/tvQuoteOfTheDay"
+            app:layout_constraintStart_toStartOf="@+id/spinner"
+            app:layout_constraintTop_toTopOf="@+id/tvQuoteOfTheDay" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

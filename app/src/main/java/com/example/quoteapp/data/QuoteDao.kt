@@ -15,6 +15,9 @@ interface QuoteDao {
     @Query("SELECT * FROM quotes WHERE isFavourite = 1")
     fun getFavouriteQuotes(): LiveData<List<Quote>>
 
+    @Query("SELECT * FROM quotes WHERE quoteId = :id")
+    fun getQuoteById(id: Long): Quote
+
     @Query("SELECT * FROM quotes ORDER BY quoteId DESC LIMIT 1")
     suspend fun qetLastQuote(): Quote?
 
@@ -23,6 +26,9 @@ interface QuoteDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addQuoteList(quotes: List<Quote>)
+
+    @Query("SELECT COUNT(*) FROM quotes")
+    fun getQuotesCount(): Long
 
     @Update
     fun updateQuote(quote: Quote)

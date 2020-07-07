@@ -67,6 +67,12 @@ class QuoteRepository(
         }
     }
 
+    fun getQuoteById(id: Long): Quote{
+        return runBlocking(Dispatchers.IO) {
+            quoteDao.getQuoteById(id)
+        }
+    }
+
     //  Загружает и добавляет в БД 10 цитат
     fun loadNewQuotes() {
         runBlocking(Dispatchers.IO) {
@@ -130,6 +136,12 @@ class QuoteRepository(
 
     fun updateFavouriteByID(id: Long, isFav: Int) {
         launch {
+            updateQuoteFavourite(id, isFav)
+        }
+    }
+
+    fun updateFavouriteByIdWithBlocking(id: Long, isFav: Int) {
+        runBlocking {
             updateQuoteFavourite(id, isFav)
         }
     }

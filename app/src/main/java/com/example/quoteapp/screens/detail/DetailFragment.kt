@@ -13,7 +13,6 @@ import com.example.quoteapp.R
 import com.example.quoteapp.di.ViewModelInjection
 import com.example.quoteapp.BaseFragment
 import kotlinx.android.synthetic.main.fragment_detail.*
-import java.util.Objects.isNull
 
 class DetailFragment : BaseFragment(R.layout.fragment_detail) {
 

@@ -16,5 +16,8 @@
         <item>12 часов</item>
         <item>24 часа</item>
     </string-array>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="refresh_button">Refresh button</string>
 
 </resources>

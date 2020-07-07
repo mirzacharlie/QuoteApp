@@ -21,7 +21,8 @@ import kotlin.reflect.KClass
         FragmentInjectorsModule::class,
         QuoteRepositoryModule::class,
         ActivityInjectorsModule::class,
-        AppComponent.WorkerBindingModule::class
+        AppComponent.WorkerBindingModule::class,
+        WidgetsModule::class
     ]
 )
 interface AppComponent : AndroidInjector<App> {

@@ -6,25 +6,15 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-<!--        <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>-->
     </style>
 
-<!--    <style name="Widget.App.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView.Colored">-->
-<!--        <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>-->
-<!--    </style>-->
 
-<!--    <style name="ThemeOverlay.App.BottomNavigationView" parent="">-->
-<!--        <item name="colorPrimary">@color/colorPrimary</item>-->
-<!--        <item name="colorOnPrimary">@color/colorAccent</item>-->
-<!--    </style>-->
 
     <style name = "AppTheme.NoActionBar">
         <item name = "windowActionBar">false</item>
         <item name = "windowNoTitle">true</item>
     </style>
 
-<!--    <style name = "AppTheme.AppBarOverlay" parent = "ThemeOverlay.AppCompat.Dark.ActionBar" />-->
-<!--    <style name = "AppTheme.PopupOverlay" parent = "ThemeOverlay.AppCompat.Light" />-->
 
     <style name="QuoteText">
         <item name="android:textStyle">italic</item>

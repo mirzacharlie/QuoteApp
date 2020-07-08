@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 
 class SyncManager @Inject constructor(
-    private val settingsManager: SettingsManager,
+    private val preferencesManager: PreferencesManager,
     private val app: Application
 ) {
 
@@ -18,7 +18,7 @@ class SyncManager @Inject constructor(
 
     private val workManager = WorkManager.getInstance(app)
 
-    private fun getInterval(): Long = settingsManager.getInterval().interval.toLong()
+    private fun getInterval(): Long = preferencesManager.getInterval().interval.toLong()
 
     fun init() {
         val interval = getInterval()
@@ -36,7 +36,7 @@ class SyncManager @Inject constructor(
             ExistingPeriodicWorkPolicy.KEEP, downloadRequest
         )
 
-        if(settingsManager.getIsQuoteOfTheDayActive()){
+        if(preferencesManager.getIsQuoteOfTheDayActive()){
             startQuoteOfTheDayNotification()
         }
     }

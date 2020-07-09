@@ -1,7 +1,6 @@
 package com.example.quoteapp.data
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.room.*
 import com.example.quoteapp.pojo.Quote
 import com.example.quoteapp.pojo.QuoteWithAuthor

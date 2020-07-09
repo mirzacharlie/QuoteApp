@@ -19,5 +19,6 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="refresh_button">Refresh button</string>
+    <string name="notify_of_quote_of_the_day">Уведомлять о цитате дня</string>
 
 </resources>

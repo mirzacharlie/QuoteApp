@@ -6,7 +6,6 @@ import androidx.work.ListenableWorker
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.quoteapp.QuoteNotificationManager
-import com.example.quoteapp.QuoteRepository
 import javax.inject.Inject
 
 class NotificationWorker constructor(

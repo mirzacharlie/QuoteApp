@@ -22,11 +22,9 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import java.net.URLDecoder
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
 import java.util.regex.Pattern
 import kotlin.coroutines.CoroutineContext
-import kotlin.random.Random
 
 
 class QuoteRepository(
@@ -165,7 +163,7 @@ class QuoteRepository(
                     authorDao.getAuthor(quote.quoteAuthor)
                 }
                 val uri = author?.imgUri?.toUri()
-                val file = File(uri?.getPath())
+                val file = File(uri?.path)
                 file.delete()
                 if (file.exists()) {
                     file.canonicalFile.delete()
@@ -286,7 +284,7 @@ class QuoteRepository(
         try {
             input = body.byteStream()
 
-            val timeStamp: String = SimpleDateFormat("yyyyMMddHHmmss").format(Date())
+            val timeStamp: String = SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(Date())
             val fileName = "PHOTO_" + timeStamp + "_"
             val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
             val file = File.createTempFile(fileName, ".img", storageDir)

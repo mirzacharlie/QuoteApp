@@ -26,7 +26,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail) {
     @ViewModelInjection
     lateinit var viewModel: DetailVM
 
-    var isFavourite = 0
+    private var isFavourite = 0
     var id = 0L
 
     private val args: DetailFragmentArgs by navArgs()
@@ -37,7 +37,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail) {
 
         viewModel.initQuoteWithAuthor(args.id)
 
-        ivFav.setOnClickListener(View.OnClickListener {
+        ivFav.setOnClickListener {
             viewModel.changeFavourite(id, isFavourite)
             viewModel.initQuoteWithAuthor(id)
             if (isFavourite == 0) {
@@ -45,7 +45,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail) {
             } else {
                 Toast.makeText(activity, "Цитата удалена из избранного", Toast.LENGTH_SHORT).show()
             }
-        })
+        }
 
         viewModel.quoteWithAuthor.observe(viewLifecycleOwner, Observer {
             tvQuote.text = it.quoteText

@@ -1,12 +1,8 @@
 package com.example.quoteapp.screens.detail
 
-import android.widget.Toast
-import androidx.lifecycle.LiveData
-import javax.inject.Inject
 import com.example.quoteapp.BaseViewModel
 import com.example.quoteapp.QuoteRepository
-import com.example.quoteapp.pojo.Author
-import com.example.quoteapp.pojo.Quote
+import javax.inject.Inject
 
 class DetailVM @Inject constructor(private val repository: QuoteRepository) : BaseViewModel() {
 

@@ -1,13 +1,11 @@
 package com.example.quoteapp
 
 import android.content.SharedPreferences
-import com.example.quoteapp.utils.APP_PREFERENCES_QUOTE_OF_THE_DAY
-import com.example.quoteapp.utils.APP_PREFERENCES_REPEAT_INTERVAL
-import com.example.quoteapp.utils.RepeatInterval
+import com.example.quoteapp.utils.*
 import javax.inject.Inject
 
 
-class SettingsManager @Inject constructor(private val preferences: SharedPreferences) {
+class PreferencesManager @Inject constructor(private val preferences: SharedPreferences) {
 
     private var currentRepeatInterval = RepeatInterval.INTERVAL_0
 
@@ -42,5 +40,18 @@ class SettingsManager @Inject constructor(private val preferences: SharedPrefere
     fun getIsQuoteOfTheDayActive(): Boolean =
         isQuoteOfTheDayActive
 
+    fun setWidgetQuoteId(id: Long){
+        preferences.edit().putLong(APP_PREFERENCES_WIDGET_CURRENT_QUOTE_ID, id).apply()
+    }
+
+    fun getWidgetQuoteId(): Long =
+        preferences.getLong(APP_PREFERENCES_WIDGET_CURRENT_QUOTE_ID, 1)
+
+    fun setLoadNewQuoteNeeded(boolean: Boolean){
+        preferences.edit().putBoolean(APP_PREFERENCES_WIDGET_LOAD_NEW_QUOTE, boolean).apply()
+    }
+
+    fun isNeadToLoadNewQuote(): Boolean =
+        preferences.getBoolean(APP_PREFERENCES_WIDGET_LOAD_NEW_QUOTE, true)
 }
 

@@ -3,7 +3,6 @@ package com.example.quoteapp.di
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.work.WorkManager
 import com.example.quoteapp.*
 import com.example.quoteapp.api.ForismaticApiService
 import com.example.quoteapp.api.ForismaticApiService.Companion.FORISMATIC_BASE_URL
@@ -96,8 +95,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideSettingsManager(sharedPreferences: SharedPreferences): SettingsManager =
-        SettingsManager(sharedPreferences)
+    fun provideSettingsManager(sharedPreferences: SharedPreferences): PreferencesManager =
+        PreferencesManager(sharedPreferences)
 
     @Provides
     @Singleton
@@ -106,8 +105,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideSyncManager(settingsManager: SettingsManager, app: Application): SyncManager =
-        SyncManager(settingsManager, app)
+    fun provideSyncManager(preferencesManager: PreferencesManager, app: Application): SyncManager =
+        SyncManager(preferencesManager, app)
 
     @Provides
     @Singleton

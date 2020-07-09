@@ -1,7 +1,6 @@
 package com.example.quoteapp.di
 
 import android.app.Application
-import com.example.quoteapp.App
 import com.example.quoteapp.QuoteRepository
 import com.example.quoteapp.api.ForismaticApiService
 import com.example.quoteapp.api.ImgDownloadService

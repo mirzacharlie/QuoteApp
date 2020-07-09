@@ -4,7 +4,6 @@ import dagger.Module
 import dagger.Provides
 import com.example.quoteapp.di.ViewModelInjection
 import com.example.quoteapp.di.InjectionViewModelProvider
-import kotlin.reflect.KClass
 
 @Module
 class DetailModule {

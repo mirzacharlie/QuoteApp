@@ -1,7 +1,6 @@
 package com.example.quoteapp.screens.favourite
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import com.example.quoteapp.BaseFragment
 import com.example.quoteapp.R
 import com.example.quoteapp.adapters.QuoteAdapter
 import com.example.quoteapp.di.ViewModelInjection
-import com.example.quoteapp.screens.quotelist.QuoteListFragmentDirections
 import kotlinx.android.synthetic.main.fragment_favourite.*
 import javax.inject.Inject
 

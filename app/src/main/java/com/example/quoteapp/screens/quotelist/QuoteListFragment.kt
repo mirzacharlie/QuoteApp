@@ -1,28 +1,20 @@
 package com.example.quoteapp.screens.quotelist
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.work.*
+import androidx.work.WorkInfo
 import com.example.quoteapp.BaseFragment
 import com.example.quoteapp.R
 import com.example.quoteapp.SyncManager
 import com.example.quoteapp.adapters.QuoteAdapter
 import com.example.quoteapp.di.ViewModelInjection
-import com.example.quoteapp.screens.detail.DetailFragment
-import com.example.quoteapp.workers.DownloadWorker
-import com.example.quoteapp.workers.NotificationWorker
 import kotlinx.android.synthetic.main.fragment_quote_list.*
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 private const val ARG_PARAM1 = "param1"

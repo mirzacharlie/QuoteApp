@@ -23,8 +23,7 @@ class QuoteWidget : QuoteWidgetProvider() {
         const val NAME_FAV = "fav"
     }
 
-    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager,
-                          appWidgetIds: IntArray
+    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray
     ) {
         val quote = getQuote()
         for (appWidgetId in appWidgetIds) {
@@ -58,7 +57,7 @@ internal fun updateAppWidget(
     } else if (quote.isFavourite == 1){
         views.setImageViewResource(R.id.iv_fav_button, R.drawable.ic_favorite_red_24dp)
     }
-    views.setImageViewResource(R.id.iv_refesh_button, R.drawable.ic_refresh_24)
+    views.setImageViewResource(R.id.iv_refresh_button, R.drawable.ic_refresh_24)
 
     val intentUpdate = Intent(context, QuoteWidget::class.java)
     val idArray = intArrayOf(appWidgetId)
@@ -89,7 +88,7 @@ internal fun updateAppWidget(
         .createPendingIntent()
 
     views.setOnClickPendingIntent(R.id.tv_quote, pendingOpen)
-    views.setOnClickPendingIntent(R.id.iv_refesh_button, pendingUpdate)
+    views.setOnClickPendingIntent(R.id.iv_refresh_button, pendingUpdate)
     views.setOnClickPendingIntent(R.id.iv_fav_button, pendingFav)
 
     appWidgetManager.updateAppWidget(appWidgetId, views)

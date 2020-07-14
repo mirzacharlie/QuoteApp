@@ -19,10 +19,10 @@
 
         <TextView
             android:id="@+id/tv_quote"
+            style="@style/QuoteText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:fontFamily="@font/oldtype"
             android:lines="2"
             android:padding="4dp"
             android:textSize="16sp"
@@ -44,20 +44,20 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/iv_refesh_button"
+            android:id="@+id/iv_refresh_button"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/ic_refresh_24"
-            android:contentDescription="@string/refresh_button" />
+            android:contentDescription="@string/refresh_button"
+            app:srcCompat="@drawable/ic_refresh_24" />
 
         <TextView
             android:id="@+id/tv_author"
+            style="@style/AuthorText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="7"
             android:ellipsize="end"
-            android:fontFamily="@font/oldtype"
             android:gravity="center"
             android:lines="2"
             android:textSize="18sp"
@@ -70,8 +70,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/ic_favorite_border_red_24dp"
-            android:contentDescription="@string/favourite_button" />
+            android:contentDescription="@string/favourite_button"
+            app:srcCompat="@drawable/ic_favorite_border_red_24dp" />
 
     </LinearLayout>
 </RelativeLayout>

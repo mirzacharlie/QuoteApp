@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import com.example.quoteapp.QuoteWidget.Companion.ACTION_REFRESH_CLICKED
+import com.example.quoteapp.QuoteWidget.Companion.ACTION_FAV_CLICKED
 import com.example.quoteapp.pojo.Quote
 import dagger.android.AndroidInjection
 import javax.inject.Inject
@@ -27,8 +28,8 @@ open class QuoteWidgetProvider : AppWidgetProvider() {
 
         val action = intent.action
 
-        if (QuoteWidget.ACTION_FAV_CLICKED == action) {
-            val id = intent.getLongExtra(QuoteWidget.NAME_ID, 0)
+        if (ACTION_FAV_CLICKED == action) {
+            val id = intent.getLongExtra(QuoteWidget.NAME_ID, 1)
             val fav = intent.getIntExtra(QuoteWidget.NAME_FAV, 0)
             repository.updateFavouriteByIdWithBlocking(id, fav)
             preferencesManager.setLoadNewQuoteNeeded(false)

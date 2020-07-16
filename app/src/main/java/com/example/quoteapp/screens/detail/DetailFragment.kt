@@ -11,7 +11,7 @@ import coil.api.load
 import javax.inject.Inject
 import com.example.quoteapp.R
 import com.example.quoteapp.di.ViewModelInjection
-import com.example.quoteapp.BaseFragment
+import com.example.quoteapp.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_detail.*
 
 class DetailFragment : BaseFragment(R.layout.fragment_detail) {

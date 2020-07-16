@@ -1,6 +1,6 @@
 package com.example.quoteapp.screens.detail
 
-import com.example.quoteapp.BaseViewModel
+import com.example.quoteapp.base.BaseViewModel
 import com.example.quoteapp.QuoteRepository
 import javax.inject.Inject
 

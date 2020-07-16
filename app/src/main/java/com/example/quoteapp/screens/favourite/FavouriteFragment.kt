@@ -8,7 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.quoteapp.BaseFragment
+import com.example.quoteapp.base.BaseFragment
 import com.example.quoteapp.R
 import com.example.quoteapp.adapters.QuoteAdapter
 import com.example.quoteapp.di.ViewModelInjection

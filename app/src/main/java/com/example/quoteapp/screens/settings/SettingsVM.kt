@@ -1,7 +1,7 @@
 package com.example.quoteapp.screens.settings
 
 import androidx.lifecycle.MutableLiveData
-import com.example.quoteapp.BaseViewModel
+import com.example.quoteapp.base.BaseViewModel
 import com.example.quoteapp.PreferencesManager
 import com.example.quoteapp.SyncManager
 import com.example.quoteapp.utils.*

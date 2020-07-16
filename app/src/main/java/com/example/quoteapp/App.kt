@@ -1,5 +1,6 @@
 package com.example.quoteapp
 
+import com.example.quoteapp.base.BaseApplication
 import com.example.quoteapp.di.DaggerAppComponent
 
 class App : BaseApplication() {

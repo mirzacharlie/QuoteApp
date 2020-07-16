@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.example.quoteapp.base.BaseActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import javax.inject.Inject
 

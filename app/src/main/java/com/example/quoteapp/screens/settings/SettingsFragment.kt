@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
-import com.example.quoteapp.BaseFragment
+import com.example.quoteapp.base.BaseFragment
 import com.example.quoteapp.R
 import com.example.quoteapp.SyncManager
 import com.example.quoteapp.di.ViewModelInjection

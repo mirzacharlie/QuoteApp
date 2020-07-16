@@ -1,4 +1,4 @@
-package com.example.quoteapp
+package com.example.quoteapp.base
 
 import android.annotation.SuppressLint
 import android.app.Application

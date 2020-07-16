@@ -2,7 +2,7 @@ package com.example.quoteapp.screens.quotelist
 
 import android.app.Application
 import androidx.work.WorkManager
-import com.example.quoteapp.BaseViewModel
+import com.example.quoteapp.base.BaseViewModel
 import com.example.quoteapp.QuoteRepository
 import com.example.quoteapp.pojo.Quote
 import com.example.quoteapp.workers.DownloadWorker

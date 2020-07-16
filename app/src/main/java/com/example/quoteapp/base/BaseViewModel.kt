@@ -1,4 +1,4 @@
-package com.example.quoteapp
+package com.example.quoteapp.base
 
 import androidx.lifecycle.ViewModel
 

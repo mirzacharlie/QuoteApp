@@ -15,10 +15,6 @@ class QuoteListVM @Inject constructor(private val repository: QuoteRepository, v
     var status = WorkManager.getInstance(app)
         .getWorkInfosForUniqueWorkLiveData(DownloadWorker.TAG)
 
-    fun loadNewQuotes() {
-        repository.loadNewQuotes()
-    }
-
     fun addToFavourite(quote: Quote){
         repository.addToFavourite(quote)
     }

@@ -1,9 +1,11 @@
 package com.example.quoteapp.screens.favourite
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -12,31 +14,22 @@ import com.example.quoteapp.base.BaseFragment
 import com.example.quoteapp.R
 import com.example.quoteapp.adapters.QuoteAdapter
 import com.example.quoteapp.di.ViewModelInjection
+import com.example.quoteapp.screens.detail.DetailFragment
 import kotlinx.android.synthetic.main.fragment_favourite.*
 import javax.inject.Inject
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 class FavouriteFragment : BaseFragment(R.layout.fragment_favourite) {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    companion object {
+        fun newInstance(): DetailFragment {
+            return DetailFragment()
+        }
+    }
 
     @Inject
     @ViewModelInjection
     lateinit var viewModel: FavouriteVM
-
     lateinit var adapter: QuoteAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-        setHasOptionsMenu(true)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,8 +38,9 @@ class FavouriteFragment : BaseFragment(R.layout.fragment_favourite) {
         return inflater.inflate(R.layout.fragment_favourite, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    @RequiresApi(Build.VERSION_CODES.N)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         adapter = QuoteAdapter()
         rvQuotes.adapter = adapter
@@ -94,15 +88,4 @@ class FavouriteFragment : BaseFragment(R.layout.fragment_favourite) {
         })
     }
 
-    companion object {
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FavouriteFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }

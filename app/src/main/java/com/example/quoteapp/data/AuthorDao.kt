@@ -23,7 +23,7 @@ interface AuthorDao {
     suspend fun getAuthorsWithoutPhoto(): List<Author>
 
     @Query("UPDATE authors SET imgUri = :imgUri, syncStatus = :syncStatus  WHERE authorName = :name")
-    fun updateAuthorImgUri(name: String, imgUri: String, syncStatus: Int): Int
+    fun updateAuthorImgUri(name: String, imgUri: String?, syncStatus: Int): Int
 
     @Query("DELETE FROM authors WHERE authorName = :authorName")
     fun deleteAuthorByName(authorName: String)

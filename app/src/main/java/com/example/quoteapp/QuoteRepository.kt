@@ -17,6 +17,7 @@ import com.example.quoteapp.pojo.QuoteWithAuthor
 import com.example.quoteapp.utils.PLACEHOLDER_URI
 import kotlinx.coroutines.*
 import okhttp3.ResponseBody
+import org.apache.commons.codec.digest.DigestUtils
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -226,9 +227,9 @@ class QuoteRepository(
     }
 
     // Вызывает метод сохранения изображения и возвращет uri в виде строки
-    private suspend fun downloadImg(url: String): String {
+    private suspend fun downloadImg(url: String): String? {
         val response = imgDownloadService.downloadImg(url).body()
-        val imgUrl = coroutineScope { async { saveFile(response) } }
+        val imgUrl = coroutineScope { async { saveFile(response, url) } }
         return imgUrl.await()
     }
 
@@ -268,20 +269,17 @@ class QuoteRepository(
     }
 
 
-    // Создаёт файл во внешнем хронилище и записывает в него скачанный ответ
-    private fun saveFile(body: ResponseBody?): String {
-        val placeholderUri = Uri.parse(PLACEHOLDER_URI).toString()
-
+    // Создаёт файл во внешнем хронилище и записывает в него скачанный ответ. Возвращает uri
+    private fun saveFile(body: ResponseBody?, url: String): String? {
         if (body == null)
-            return placeholderUri
+            return null
         var input: InputStream? = null
         try {
             input = body.byteStream()
 
-            val timeStamp: String = SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(Date())
-            val fileName = "PHOTO_" + timeStamp + "_"
+            val fileName: String = DigestUtils.md5Hex(url)
             val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-            val file = File.createTempFile(fileName, ".img", storageDir)
+            val file = File.createTempFile(fileName, "", storageDir)
 
             val fos = FileOutputStream(file)
             fos.use { output ->
@@ -298,7 +296,7 @@ class QuoteRepository(
         } finally {
             input?.close()
         }
-        return placeholderUri
+        return null
     }
 
 }

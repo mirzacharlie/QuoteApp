@@ -132,12 +132,6 @@ class QuoteRepository(
         }
     }
 
-    fun updateFavouriteByID(id: Long, isFav: Int) {
-        launch {
-            updateQuoteFavourite(id, isFav)
-        }
-    }
-
     fun updateFavouriteByIdWithBlocking(id: Long, isFav: Int) {
         runBlocking {
             updateQuoteFavourite(id, isFav)

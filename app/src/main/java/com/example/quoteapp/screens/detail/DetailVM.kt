@@ -14,9 +14,9 @@ class DetailVM @Inject constructor(private val repository: QuoteRepository) : Ba
 
     fun changeFavourite(id: Long, isFav: Int){
         if (isFav == 0){
-            repository.updateFavouriteByID(id, 1)
+            repository.updateFavouriteByIdWithBlocking(id, 1)
         } else {
-            repository.updateFavouriteByID(id, 0)
+            repository.updateFavouriteByIdWithBlocking(id, 0)
         }
     }
 

@@ -1,0 +1,69 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/ivPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/author_image"
+        android:maxWidth="350dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/author_placeholder" />
+
+    <TextView
+        android:id="@+id/tvAuthor"
+        style="@style/AuthorText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:textSize="26sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ivPhoto"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Фрэнк Заппа" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivPhoto"
+        app:layout_constraintTop_toBottomOf="@+id/tvAuthor">
+
+        <TextView
+            android:id="@+id/tvQuote"
+            style="@style/QuoteText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="22sp"
+            tools:text="Если ты всегда слушал папу с мамой, школьных учителей,
+             священников и какого-то дядьку в телевизоре, а теперь из-за этого ведешь скучную
+              и несчастную жизнь, то, парень, ты этого заслуживаешь." />
+    </androidx.core.widget.NestedScrollView>
+
+
+
+    <ImageView
+        android:id="@+id/ivFav"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:contentDescription="@string/favourite_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/ivPhoto"
+        app:srcCompat="@drawable/ic_favorite_red_24dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
